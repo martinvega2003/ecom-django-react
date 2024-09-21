@@ -1,5 +1,75 @@
 .nuevo-cont {
     width: 100%;
     height: 100vh;
-    background: pink;
+    background: var(--page-bg);
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
+
+    .nuevo-cont .nuevo-encabezado {
+        width: 98%;
+        min-height: 500px;
+        background: var(--black);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .nuevo-cont .nuevo-encabezado h2 {
+            margin-bottom: 30px;
+        }
+
+        .nuevo-cont .nuevo-encabezado p {
+            color: var(--text);
+        }
+    
+    .nuevo-cont .nuevo-contenido {
+        width: 98%;
+        height: fit-content;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+        .nuevo-cont .nuevo-contenido .categorias {
+            width: 20%;
+            height: fit-content;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+            .nuevo-cont .nuevo-contenido .categorias button {
+                width: 100%;
+                height: fit-content;
+                background: transparent;
+                padding: 15px;
+                margin: 15px 0;
+                font-size: 18px;
+                color: white;
+                border: none;
+                border-bottom: 3px solid transparent;
+            }
+
+            .nuevo-cont .nuevo-contenido .categorias button:hover {
+                border-bottom: 3px solid var(--green);
+                color: green;
+            }
+
+        .nuevo-cont .nuevo-contenido .productos {
+            width: 70%;
+            height: fit-content;
+            background: none;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-start;
+        }

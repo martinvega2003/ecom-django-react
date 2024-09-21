@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "djoser",
+    "store",
 ]
 
 #Configuracion de los servers que podran comunicarse con cors
