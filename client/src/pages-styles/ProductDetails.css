@@ -1,5 +1,82 @@
-.details-cont {
+.product-details {
     width: 100%;
     height: 100vh;
-    background: pink;
+    padding-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+    .product-details .left {
+        width: 45%;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .product-details .left img {
+            width: 80%;
+            height: 80%;
+        }
+    
+    .product-details .right {
+        width: 45%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+        .product-details .right span.category {
+            text-align: left;
+            font-size: 12px;
+            color: var(--light-text);
+        }
+
+        .product-details .right h2 {
+            text-align: left;
+            font-weight: bold;
+            font-size: 26px;
+            color: var(--black);
+        }
+
+        .product-details .right span.price {
+            text-align: left;
+            font-weight: bold;
+            font-size: 23px;
+            color: var(--black);
+            margin: 10px 0;
+        }
+
+        .product-details .right .add-cart-btn {
+            width: 200px;
+            height: fit-content;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 16px;
+            color: var(--black);
+            border: 5px solid var(--black);
+            transition: all .2s linear;
+        }
+
+        .product-details .right button:hover {
+            background: var(--black);
+            color: white;
+        }
+
+        .product-details .right span {
+            text-align: left;
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--black);
+        }
+
+        .product-details .right p {
+            text-align: left;
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--text);
+            margin: 10px 0;
+        }

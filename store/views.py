@@ -58,7 +58,7 @@ class RecentProductsByCategoryView(APIView):
 class ProductDetail(APIView):
     def get_object(self, category_slug, product_slug):
         try:
-            return Product.objects.filter(category__slug=category_slug, slug=product_slug) 
+            return Product.objects.get(category__slug=category_slug, slug=product_slug) 
             #Como arriba filtramos a partir de Product, hay que usar category__slug para comparar el slug de category (La FK) y solo slug para comparar el de Producto (Ya que es como se llama el propio atributo en el modelo Product)
         except Product.DoesNotExist:
             raise Http404
@@ -66,5 +66,5 @@ class ProductDetail(APIView):
     def get(self, request, category_slug, product_slug, format=None):
         product = self.get_object(category_slug, product_slug) #Llamamos a la funcion get_object directamente desde aca.
         serializer = ProductSerializer(product) #A ProductSerializer le pasamos el objeto product
-        return Response(serializer.data) #Retornamos con Response la data del serializer.
+        return Response(serializer.data, status=status.HTTP_200_OK) #Retornamos con Response la data del serializer.
     

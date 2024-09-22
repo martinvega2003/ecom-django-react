@@ -5,15 +5,20 @@ import axios from "axios"
 import "../pages-styles/Nuevo.css"
 import { ProductCard } from '../components/ProductCard'
 
+//ContextAPI:
+import { useStore } from '../context/storecontext'
+
 export const Nuevo = () => {
 
   const [categories, setCategories] = useState([])
   const [latestProducts, setLatestProducts] = useState([])
 
+  const {selectedCategory, setSelectedCategory} = useStore() //Obtenemos esto del contexto Store
+
   useEffect(() => {
     fetchCategories()
     fetchLatestProducts()
-  }, [])
+  }, [selectedCategory])
 
   const fetchCategories = async () => {
     const res = await axios.get('http://127.0.0.1:8000/api/v1/store/categories/categories') 
@@ -21,7 +26,7 @@ export const Nuevo = () => {
   }
 
   const fetchLatestProducts = async () => {
-    const res = await axios.get('http://127.0.0.1:8000/api/v1/store/productos/nuevo/4') 
+    const res = await axios.get('http://127.0.0.1:8000/api/v1/store/productos/nuevo/' + selectedCategory)   
     setLatestProducts(res.data)
   }
 
@@ -42,7 +47,7 @@ export const Nuevo = () => {
           {
             categories.map(category => {
               return (
-                <button>
+                <button onClick={() => setSelectedCategory(category.id)}>
                   {category.name}
                 </button>
               )

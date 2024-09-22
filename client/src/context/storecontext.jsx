@@ -1,0 +1,20 @@
+import { useState,  createContext, useContext } from "react" //useContext es un hook que permite usar las funciones de este contenedor en los componentes hijos. createContext ayuda a definir el contexto (El lugar de donde los componentes hijos sacaran las funciones)
+
+const context = createContext() //Este es el verdadero contexto, lo de abajo es solo la logica
+
+//PARA USAR ESTE CONTEXTO EN OTROS COMPONENTES, HAY QUE REALIZAR UNA SERIE DE PASOS. PARA NO REPETIRLOS CREAMOS NUESTRA PROPIA FUNCION (CUSTOM HOOK) QUE REALIZA ESOS PASOS:
+export const useStore = () => {
+    const storeContext = useContext(context) //Esto obtiene los valores que pasamos en values al contexto abajo. postContext guarda esos valores.
+    return storeContext
+}
+
+export const StoreProvider = ({children}) => { //El context sera un componente que contendra a los componentes que usaran su estado (El estado global)
+
+    const [selectedCategory, setSelectedCategory] = useState(1) //Creamos un state en el componente del contexto. En HomePage.jsx creamos un boton para aumentar este estado.
+
+    return ( //Usamos la variable context y le agregamos el .Provider para que se vuelva el contexto. En value se pasan las funciones y valores que se compartiran.
+        <context.Provider value={{selectedCategory, setSelectedCategory}}>
+            {children}
+        </context.Provider>
+    )
+}

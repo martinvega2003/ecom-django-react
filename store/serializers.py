@@ -12,5 +12,6 @@ class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer() #Asi traemos toda la data de la FK aca.
     class Meta:
         model = Product
+        #fields = "__all__"
         fields = ["name", "inventory", "price", "category", "description", "image", "thumbnail", "addedDate", "slug"]
         
