@@ -1,5 +1,9 @@
 # Create your views here.
 
+#Importes para la funcion de busqueda:
+from django.db.models import Q
+from rest_framework.decorators import api_view #Decorador 
+
 #Creamos las vistas con viewsets usanfo los serializers:
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -19,9 +23,43 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(name__icontains=search_query)
+        return queryset
+
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+#VIEWS PARA VER PRODUCTOS POR CATEGORIAS
+
+class ProductsByCategoryView(APIView):
+    """
+    API View to retrieve products added in the last 2 days for a specific category.
+    If there are more than 4 products, return the most recent 4.
+    """
+
+    def get(self, request, category_id):
+        """
+        GET method to handle the request and return products from the last 2 days.
+        :param category_id: The ID of the category to filter by.
+        """
+        # Get the category or return a 404 error if not found
+        category = get_object_or_404(Category, id=category_id)
+        
+        # Filter products by the category and check if they were added in the last 2 days. Se obtienen estos productos en un array
+        products = Product.objects.filter(category=category).order_by('-addedDate')
+        
+        # Serialize the filtered products
+        serializer = ProductSerializer(products, many=True)
+        
+        # Return the serialized data along with HTTP status 200 (OK)
+        if serializer.data:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"message": "No products in this category"})
 
 #VIEW PARA  OBTENER LOS PRODUCTOS AGREGADOS EN LOS ULTIMOS 2 DIAS (MAXIMO DE 4 PRODUCTOS) POR CATEGORIA:
 
@@ -53,7 +91,9 @@ class RecentProductsByCategoryView(APIView):
         serializer = ProductSerializer(products, many=True)
         
         # Return the serialized data along with HTTP status 200 (OK)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if serializer.data:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"message": "No products in this category"})
     
 class ProductDetail(APIView):
     def get_object(self, category_slug, product_slug):
@@ -81,3 +121,15 @@ class CategoryView(APIView):
         category = self.get_object(category_slug) 
         serializer = CategorySerializer(category) 
         return Response(serializer.data, status=status.HTTP_200_OK) 
+    
+@api_view(["POST"]) #Solo acepta peticiones POST
+def search(request):
+    query = request.data.get("query", "") #De request.data obtenemos query o un String vacio
+
+    if query: #Si existe la query (Busqueda del user)
+        products = Product.objects.get(Q(name__icontains=query) | Q(description__icontains=query)) #products = Del modelo productos se buscan los objetos que en el nombre o descripcion tengan coincidencias con la query
+        serializer = ProductSerializer(products, many=True) #Serializamos el array productos (QUe pueden ser muchos)
+        return Response(serializer.data) #Respondemos con la data del array serializado
+    else:
+        return Response({"products": []}) #Si no existe la query, retornamos un objeto que tiene una llave products que es un array vacio
+    

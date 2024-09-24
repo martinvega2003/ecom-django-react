@@ -12,6 +12,7 @@ export const Nuevo = () => {
 
   //const [categories, setCategories] = useState([])
   const [latestProducts, setLatestProducts] = useState([])
+  let errorMessage = ""
 
   const {selectedCategory, setSelectedCategory, categories} = useStore() //Obtenemos esto del contexto Store
 
@@ -21,8 +22,12 @@ export const Nuevo = () => {
 
   const fetchLatestProducts = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/v1/store/productos/nuevo/' + selectedCategory)   
-      setLatestProducts(res.data)
+      const res = await axios.get('http://127.0.0.1:8000/api/v1/store/products/new/' + selectedCategory)   
+      if (res.data instanceof Array) {
+        setLatestProducts(res.data)
+      } else {
+        errorMessage = res.data.message
+      }
     } catch (error) {
       alert("Error tratando de llamar a la base de datos: ", error)
     }
@@ -68,7 +73,8 @@ export const Nuevo = () => {
                 />
               )
             })
-          } 
+          }
+
         </div>
       </div>
     </div>

@@ -11,7 +11,8 @@ import { useStore } from '../context/storecontext'
 export const Ofertas = () => {
 
   //const [categories, setCategories] = useState([])
-  const [latestProducts, setLatestProducts] = useState([])
+  const [discountedProducts, setDiscountedProducts] = useState([])
+  let errorMessage = ""
 
   const {selectedCategory, setSelectedCategory, categories} = useStore() //Obtenemos esto del contexto Store
 
@@ -22,8 +23,13 @@ export const Ofertas = () => {
 
   const fetchDiscountedProducts = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/v1/store/productos/nuevo/' + selectedCategory)   
-      setLatestProducts(res.data)
+      const res = await axios.get('http://127.0.0.1:8000/api/v1/store/products/' + selectedCategory)   
+      if (res.data instanceof Array) {
+        setDiscountedProducts(res.data)
+      } else {
+        errorMessage = res.data.message
+        setDiscountedProducts([])
+      }
     } catch (error) {
       alert("Error tratando de llamar a la base de datos: ", error)
     }
@@ -78,7 +84,7 @@ export const Ofertas = () => {
 
         <div className="productos">
           {
-            latestProducts.map(product => {
+            discountedProducts.map(product => {
               return (
                 <ProductCard 
                   image={product.image}

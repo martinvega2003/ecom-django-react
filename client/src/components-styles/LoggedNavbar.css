@@ -23,13 +23,14 @@
             color: var(--green);
         }
 
-    .logged-.h-cont .h-links {
-        width: 40%;
+    .logged-h-cont .h-links {
+        width: fit-content;
         height: fit-content;
         background: none;
         border: none;
         margin: 15px;
         display: flex;
+        flex-wrap: nowrap;
         align-items: center;
         justify-content: space-evenly;
     }
@@ -53,9 +54,9 @@
             background: var(--green);
         }
 
-        .logged-h-cont .h-links .login-link {
+        .logged-h-cont .h-links .logout-btn {
             width: fit-content;
-            height: fit-content;
+            height: 50px;
             background: white;
             border: none;
             padding: 10px 15px;
@@ -63,16 +64,31 @@
             color: var(--black);
             font-size: 16px;
             text-decoration: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all .2s linear;
+        }
+
+        .logged-h-cont .h-links .logout-btn:hover {
+            background: var(--black);
+            color: white;
         }
 
         .logged-h-cont .h-links .cart-link {
             width: fit-content;
-            height: fit-content;
+            max-height: 50px;
             color: var(--black);
             background: var(--green);
             border: none;
-            padding: 10px 15px;
+            padding: 17px 25px;
             margin: 10px;
             font-size: 16px;
+            border-radius: 50px;
             text-decoration: none;
+            transition: all .2s linear;
+        }
+
+        .logged-h-cont .h-links .cart-link:hover {
+            background: var(--dark-green);
+            color: white;
         }

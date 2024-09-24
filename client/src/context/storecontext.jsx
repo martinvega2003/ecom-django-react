@@ -13,6 +13,7 @@ export const StoreProvider = ({children}) => { //El context sera un componente q
 
     const [selectedCategory, setSelectedCategory] = useState(1) //Creamos un state en el componente del contexto. En HomePage.jsx creamos un boton para aumentar este estado.
     const [cart, setCart] = useState([])
+    const [searchedProducts, setSearchedProducts] = useState([])
 
     //Fetching del backend:
     useEffect(() => {
@@ -32,7 +33,7 @@ export const StoreProvider = ({children}) => { //El context sera un componente q
       }
 
     return ( //Usamos la variable context y le agregamos el .Provider para que se vuelva el contexto. En value se pasan las funciones y valores que se compartiran.
-        <context.Provider value={{selectedCategory, setSelectedCategory, cart, setCart, categories, setCategories}}>
+        <context.Provider value={{selectedCategory, setSelectedCategory, cart, setCart, categories, setCategories, searchedProducts, setSearchedProducts}}>
             {children}
         </context.Provider>
     )

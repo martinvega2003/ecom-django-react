@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       <StoreProvider >
-        <Navbar />
+        <LoggedNavbar />
         <Routes>
           <Route path='/' element={<Home />}/>
           <Route path='/nuevo' element={<Nuevo />}/>
