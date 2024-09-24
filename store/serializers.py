@@ -3,15 +3,20 @@
 from rest_framework import serializers
 from .models import Product, Category
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategoryData(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer() #Asi traemos toda la data de la FK aca.
+    category = CategoryData() #Asi traemos toda la data de la FK aca.
     class Meta:
         model = Product
         #fields = "__all__"
-        fields = ["name", "inventory", "price", "category", "description", "image", "thumbnail", "addedDate", "slug"]
+        fields = ["name", "inventory", "price", "category", "description", "isDiscounted", "image", "thumbnail", "addedDate", "slug"]
         
+class CategorySerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True)
+    class Meta:
+        model = Category
+        fields = ["id", "name", "slug", "products"] #Le agregamos "products" para que en un array nos traiga los productos de esta categoria

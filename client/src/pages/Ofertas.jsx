@@ -5,26 +5,28 @@ import { ProductCard } from '../components/ProductCard'
 //Importes:
 import "../pages-styles/Ofertas.css"
 
+//Context:
+import { useStore } from '../context/storecontext'
+
 export const Ofertas = () => {
 
-  const [categories, setCategories] = useState([])
+  //const [categories, setCategories] = useState([])
   const [latestProducts, setLatestProducts] = useState([])
 
-  //const categoryId = 4
+  const {selectedCategory, setSelectedCategory, categories} = useStore() //Obtenemos esto del contexto Store
 
   useEffect(() => {
-    fetchCategories()
-    fetchLatestProducts()
-  }, [])
+    //fetchCategories()
+    fetchDiscountedProducts()
+  }, [selectedCategory])
 
-  const fetchCategories = async () => {
-    const res = await axios.get('http://127.0.0.1:8000/api/v1/store/categories/categories') 
-    setCategories(res.data)
-  }
-
-  const fetchLatestProducts = async () => {
-    const res = await axios.get('http://127.0.0.1:8000/api/v1/store/productos/nuevo/4') 
-    setLatestProducts(res.data)
+  const fetchDiscountedProducts = async () => {
+    try {
+      const res = await axios.get('http://127.0.0.1:8000/api/v1/store/productos/nuevo/' + selectedCategory)   
+      setLatestProducts(res.data)
+    } catch (error) {
+      alert("Error tratando de llamar a la base de datos: ", error)
+    }
   }
 
   return (
@@ -65,7 +67,7 @@ export const Ofertas = () => {
           {
             categories.map(category => {
               return (
-                <button>
+                <button onClick={() => setSelectedCategory(category.id)}>
                   {category.name}
                 </button>
               )

@@ -67,4 +67,17 @@ class ProductDetail(APIView):
         product = self.get_object(category_slug, product_slug) #Llamamos a la funcion get_object directamente desde aca.
         serializer = ProductSerializer(product) #A ProductSerializer le pasamos el objeto product
         return Response(serializer.data, status=status.HTTP_200_OK) #Retornamos con Response la data del serializer.
+
+class CategoryView(APIView):
+    #Esta es la misma vista para obtener un solo producto, pero para obtener una sola categoria.
     
+    def get_object(self, category_slug):
+        try:
+            return Category.objects.get(slug=category_slug) 
+        except Category.DoesNotExist:
+            raise Http404
+        
+    def get(self, request, category_slug, format=None):
+        category = self.get_object(category_slug) 
+        serializer = CategorySerializer(category) 
+        return Response(serializer.data, status=status.HTTP_200_OK) 

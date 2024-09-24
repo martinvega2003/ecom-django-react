@@ -10,24 +10,22 @@ import { useStore } from '../context/storecontext'
 
 export const Nuevo = () => {
 
-  const [categories, setCategories] = useState([])
+  //const [categories, setCategories] = useState([])
   const [latestProducts, setLatestProducts] = useState([])
 
-  const {selectedCategory, setSelectedCategory} = useStore() //Obtenemos esto del contexto Store
+  const {selectedCategory, setSelectedCategory, categories} = useStore() //Obtenemos esto del contexto Store
 
   useEffect(() => {
-    fetchCategories()
     fetchLatestProducts()
   }, [selectedCategory])
 
-  const fetchCategories = async () => {
-    const res = await axios.get('http://127.0.0.1:8000/api/v1/store/categories/categories') 
-    setCategories(res.data)
-  }
-
   const fetchLatestProducts = async () => {
-    const res = await axios.get('http://127.0.0.1:8000/api/v1/store/productos/nuevo/' + selectedCategory)   
-    setLatestProducts(res.data)
+    try {
+      const res = await axios.get('http://127.0.0.1:8000/api/v1/store/productos/nuevo/' + selectedCategory)   
+      setLatestProducts(res.data)
+    } catch (error) {
+      alert("Error tratando de llamar a la base de datos: ", error)
+    }
   }
 
   return (

@@ -11,5 +11,6 @@ urlpatterns = [
     path('products/', include(productsRouter.urls)),
     path('categories/', include(categoriesRouter.urls)),
     path('productos/nuevo/<int:category_id>/', views.RecentProductsByCategoryView.as_view(), name='recent-products-by-category'),
-    path("products/<slug:category_slug>/<slug:product_slug>/", views.ProductDetail.as_view()), #slug es un tipo de dato.
+    path("products/<slug:category_slug>/<slug:product_slug>/", views.ProductDetail.as_view(), name="product_detail"), #slug es un tipo de dato.
+    path("categories/<slug:category_slug>/", views.CategoryView.as_view(), name="category_view")
 ]

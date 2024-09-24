@@ -28,6 +28,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
+    isDiscounted = models.BooleanField(default=False)
     image = models.ImageField(upload_to="uploads/", blank=True, null=True)
     thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
     addedDate = models.DateField(auto_now_add=True)

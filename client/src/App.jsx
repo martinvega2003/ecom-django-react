@@ -3,6 +3,7 @@ import './App.css'
 //Importes:
 import {Routes, Route} from "react-router-dom"
 import { Navbar } from './components/Navbar'
+import { LoggedNavbar } from './components/LoggedNavbar'
 import { Home } from "./pages/Home"
 import { Nuevo } from './pages/Nuevo'
 import { Ofertas } from './pages/Ofertas'
@@ -13,7 +14,7 @@ function App() {
 
   return (
     <>
-      <StoreProvider />
+      <StoreProvider >
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />}/>
@@ -21,7 +22,7 @@ function App() {
           <Route path='/ofertas' element={<Ofertas />}/>
           <Route path='/productos/:category_slug/:product_slug' exact element={<ProductDetails />}/>
         </Routes>
-      <StoreProvider />
+      </ StoreProvider >
     </>
   )
 }
