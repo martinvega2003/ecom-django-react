@@ -13,9 +13,10 @@ from django.utils import timezone
 from datetime import timedelta
 from django.http import Http404
 
+from rest_framework import generics
 from rest_framework import viewsets
-from .models import Product, Category
-from .serializers import ProductSerializer, CategorySerializer
+from .models import Product, Category, Cart
+from .serializers import ProductSerializer, CategorySerializer, CartSerializer
 
 #CRUDS SIMPLES DE PRODUCT Y CATEGORY:
 
@@ -133,3 +134,22 @@ def search(request):
     else:
         return Response({"products": []}) #Si no existe la query, retornamos un objeto que tiene una llave products que es un array vacio
     
+class CartListView(generics.ListAPIView):
+    # permission_classes = [permissions.IsAuthenticated]  # Uncomment when using authentication
+    serializer_class = CartSerializer
+
+    def get_queryset(self):
+        # return Cart.objects.filter(user=self.request.user)  # Uncomment when using authentication
+        return Cart.objects.all()  # For testing without user authentication
+
+@api_view(['POST'])
+def add_to_cart(request):
+    product_id = request.data.get('product_id')
+    # if request.user.is_authenticated:  # Uncomment when using authentication
+    cart_item, created = Cart.objects.get_or_create(product_id=product_id)  # Remove user reference for testing
+    if created:
+        return Response({'message': 'Product added to cart.'}, status=201)
+    else:
+        return Response({'message': 'Product already in cart.'}, status=400)
+    # else:  # Uncomment when using authentication
+    #     return Response({'message': 'Authentication required.'}, status=403)  # Uncomment when using authentication

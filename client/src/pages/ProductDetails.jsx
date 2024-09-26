@@ -27,6 +27,18 @@ export function ProductDetails() {
     return <div>Loading...</div>;
   }
 
+  const addToCart = async () => {
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/api/v1/store/cart/add/', {
+            product_id: product.id,
+        });
+        alert(response.data.message);
+    } catch (error) {
+        console.error("Error adding to cart:", error);
+        alert("Could not add to cart.");
+    }
+  };
+
   return (
     <div className="product-details">
         <div className="left">
@@ -44,7 +56,7 @@ export function ProductDetails() {
                 {product.price} Gs.
             </span>
             <OrderForm product={product} /> 
-            <button className="add-cart-btn">
+            <button className="add-cart-btn" onClick={addToCart}>
                 Agregar al carrito
             </button>
             <span>

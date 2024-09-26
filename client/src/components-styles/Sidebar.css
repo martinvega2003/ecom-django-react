@@ -1,0 +1,36 @@
+.sidebar-container {
+    left: -90%;
+    position: fixed;
+    display: flex;
+    height: 90vh;
+    margin-top: 10px;
+    transition: all 0.3s linear;
+}
+
+.toggle-button {
+    left: 0;
+    z-index: 1000;
+}
+
+.sidebar {
+    width: 20%;
+    height: 90%;
+    background-color: #f0f0f0;
+    transition: width 0.3s;
+    overflow: hidden;
+    position: fixed;
+    top: 10px;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.sidebar.closed {
+    width: 50px;
+    padding: 10px;
+}
+
+.price-input {
+    margin-right: 5px;
+}
+

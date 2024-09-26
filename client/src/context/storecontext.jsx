@@ -12,12 +12,14 @@ export const useStore = () => {
 export const StoreProvider = ({children}) => { //El context sera un componente que contendra a los componentes que usaran su estado (El estado global)
 
     const [selectedCategory, setSelectedCategory] = useState(1) //Creamos un state en el componente del contexto. En HomePage.jsx creamos un boton para aumentar este estado.
-    const [cart, setCart] = useState([])
+    const [cartItems, setCartItems] = useState([])
     const [searchedProducts, setSearchedProducts] = useState([])
 
     //Fetching del backend:
     useEffect(() => {
         fetchCategories()
+        fetchProducts()
+        fetchCartItems()
     }, [])
 
     //Fetching de las categories:
@@ -32,8 +34,31 @@ export const StoreProvider = ({children}) => { //El context sera un componente q
         }
       }
 
+    //Fetching de todos los productos:
+    const [products, setProducts] = useState([])
+
+    const fetchProducts = async () => {
+        try {
+          const res = await axios.get('http://127.0.0.1:8000/api/v1/store/products/products') 
+          setProducts(res.data)
+        } catch (error) {
+          alert("Error tratando de llamar a la base de datos: ", error)
+        }
+      }
+
+    //Fetching del carrito:
+    const fetchCartItems = async () => {
+      try {
+          const response = await axios.get('http://127.0.0.1:8000/api/v1/store/cart/');
+          setCartItems(response.data);
+          alert(response.data)
+      } catch (error) {
+          console.error("Error fetching cart items:", error);
+      }
+    };
+
     return ( //Usamos la variable context y le agregamos el .Provider para que se vuelva el contexto. En value se pasan las funciones y valores que se compartiran.
-        <context.Provider value={{selectedCategory, setSelectedCategory, cart, setCart, categories, setCategories, searchedProducts, setSearchedProducts}}>
+        <context.Provider value={{selectedCategory, setSelectedCategory, cartItems, setCartItems, categories, setCategories, products, setProducts, searchedProducts, setSearchedProducts}}>
             {children}
         </context.Provider>
     )

@@ -1,0 +1,53 @@
+/* src/pages-styles/PaymentMethods.css */
+.payment-methods {
+    padding: 120px 20px 20px 80px;
+    background-color: var(--white);
+    color: var(--black);
+    border-radius: 8px;
+    box-shadow: 0 40px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: var(--black);
+}
+
+.method-list {
+    margin: 20px 0;
+}
+
+.payment-method {
+    border: 1px solid var(--dark-green);
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: var(--light-green);
+}
+
+.payment-method .remove-btn {
+    background-color: var(--dark-green);
+    color: var(--white);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.payment-method .remove-btn:hover {
+    background-color: var(--green);
+}
+
+.payment-methods .add-method-btn {
+    background-color: var(--green);
+    color: var(--white);
+    text-decoration: none;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.payment-methods .add-method-btn:hover {
+    background-color: var(--dark-green);
+}

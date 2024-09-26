@@ -22,13 +22,30 @@ class Category(models.Model):
     def get_absolute_url(self): #
         return "/" + {self.slug} + "/"
 
+class Size(models.Model):
+    value = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.value
+
 class Product(models.Model):
+
+    class ProductType(models.TextChoices):
+        TSHIRT = 'TS', 'T-Shirt'
+        SHOE = 'SH', 'Shoe'
+
     name = models.CharField(max_length=100)
     inventory = models.PositiveIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
     isDiscounted = models.BooleanField(default=False)
+    product_type = models.CharField(
+        max_length=2,
+        choices=ProductType.choices,
+        default=ProductType.TSHIRT
+    )
+    sizes = models.ManyToManyField('Size', related_name='products')
     image = models.ImageField(upload_to="uploads/", blank=True, null=True)
     thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
     addedDate = models.DateField(auto_now_add=True)
@@ -87,3 +104,13 @@ class Product(models.Model):
         img.save(thumbnailIo, "JPEG", quality=100) #Guardamos la imagen
         thubnail = File(thumbnailIo, name=image.name) #File tambien lo importamos de arriba
         return thubnail #Se retorna la portada que se creo a partir de la imagen que pasamos de argumentos.
+
+class Cart(models.Model):
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)  # Uncomment when using authentication
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ('product', )  # Uncomment when using authentication -> Agregar "user" cuando ya haya la funcionalidad de authentication.
+
+    def __str__(self):
+        return f"Cart: {self.product.name}"  # Adjust as needed

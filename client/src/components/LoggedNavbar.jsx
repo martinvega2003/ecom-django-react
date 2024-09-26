@@ -38,11 +38,12 @@ export const LoggedNavbar = () => {
         </Link>
 
         <div className="h-links">
+            <Link className='account-link'>T</Link>
             <SearchBarWrapper />
             <button className="logout-btn">
               Cerrar Sesion
             </button>
-            <Link className='cart-link'>carrito</Link> 
+            <Link className='cart-link' to="/cart">carrito</Link> 
         </div>
     </nav>
   )

@@ -10,4 +10,4 @@ urlpatterns = [
     path("api/v1/", include("djoser.urls")),
     path("api/v1/", include("djoser.urls.authtoken")),
     path("api/v1/store/", include("store.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #Le agregamos la funcion static con estos argumentos.
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) #Le agregamos la funcion static con estos argumentos.
