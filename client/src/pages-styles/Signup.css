@@ -1,0 +1,75 @@
+.signup-form-cont {
+    width: 100%;
+    height: 100vh;
+    overflow: scroll;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-form {
+    width: 400px;
+    height: fit-content;
+    background-color: var(--white);
+    color: var(--black);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    box-shadow: 0 40px 20px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form h1 {
+    color: var(--black);
+}
+
+.signup-form .form-group {
+    margin-bottom: 15px;
+}
+
+.signup-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.signup-form input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid var(--dark-green);
+    border-radius: 5px;
+}
+
+.signup-form .btn-cont {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+.signup-form .login-text {
+    font-size: 16px;
+    text-decoration: none;
+    color: var(--black);
+    transition: all .2s linear;
+}
+
+.signup-form .login-text:hover {
+    font-size: 18px;
+}
+
+.signup-form button.submit-btn {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    margin-right: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.signup-form button.submit-btn:hover {
+    background-color: var(--dark-green);
+}

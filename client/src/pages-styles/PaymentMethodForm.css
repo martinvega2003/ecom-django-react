@@ -1,43 +1,49 @@
-/* src/pages-styles/AddPaymentMethod.css */
-.add-payment-method {
-    padding: 120px 20px 20px 80px;
-    background-color: var(--white);
-    color: var(--black);
-    border-radius: 8px;
-    box-shadow: 0 40px 20px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    color: var(--black);
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input {
+.payment-method-form-cont {
     width: 100%;
-    padding: 10px;
-    border: 1px solid var(--dark-green);
-    border-radius: 5px;
+    height: 100vh;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    padding: 180px 20px 20px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-button.submit-btn {
-    background-color: var(--green);
-    color: var(--white);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+    .payment-method-form-cont .btns-cont {
+        width: 90%;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-button.submit-btn:hover {
-    background-color: var(--dark-green);
-}
+        .payment-method-form-cont .btns-cont button {
+            width: 33%;
+            height: fit-content;
+            background: white;
+            box-sizing: border-box;
+            padding: 20px;
+            font-size: 18px;
+            border: 3px solid var(--green);
+            transition: all .2s linear;
+        }
+
+        .payment-method-form-cont .btns-cont button.active {
+            background: var(--dark-green);
+            color: white;
+        }
+
+        .payment-method-form-cont .btns-cont button:hover {
+            background: var(--dark-green);
+            color: white;
+        }
+
+    .payment-method-form-cont .form-cont {
+        width: 90%;
+        max-height: 600px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }

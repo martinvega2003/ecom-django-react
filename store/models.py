@@ -114,3 +114,17 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"Cart: {self.product.name}"  # Adjust as needed
+    
+class PaymentMethod(models.Model):
+    METHOD_CHOICES = [
+        ('credit_card', 'Credit Card'),
+        ('paypal', 'PayPal'),
+        ('bank_transfer', 'Bank Transfer'),
+    ]
+    
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)  # Uncomment when user auth is implemented
+    method_type = models.CharField(max_length=20, choices=METHOD_CHOICES)
+    details = models.JSONField()  # Store method-specific details as JSON
+
+    def __str__(self):
+        return f"{self.method_type} - {self.details}"

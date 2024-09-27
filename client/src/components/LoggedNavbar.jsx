@@ -38,7 +38,7 @@ export const LoggedNavbar = () => {
         </Link>
 
         <div className="h-links">
-            <Link className='account-link'>T</Link>
+            <Link to="/account" className='account-link'>T</Link>
             <SearchBarWrapper />
             <button className="logout-btn">
               Cerrar Sesion

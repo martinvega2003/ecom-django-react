@@ -14,6 +14,8 @@ import Cart from './pages/Cart'
 import MyAccount from './pages/MyAccount'
 import PaymentMethods from './pages/PaymentMethods'
 import AddPaymentMethod from './pages/PaymentMethodForm'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
         <LoggedNavbar />
         <Routes>
           <Route path='/' element={<Home />}/>
+          <Route path='/sign-up' element={<Signup />}/>
+          <Route path='/login' element={<Login />}/>
           <Route path='/account' element={<MyAccount />}/>
           <Route path='/nuevo' element={<Nuevo />}/>
           <Route path='/ofertas' element={<Ofertas />}/>
