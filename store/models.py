@@ -63,8 +63,8 @@ class Product(models.Model):
     
     #Se le pasa la cantidad comprada como argumento y se reduce en esa cantidad si hay inventario disponible
     def reduceStock(self, quantity):
-        if self.inventory >= quantity:
-            self.inventory -= quantity
+        if self.inventory >= int(quantity):
+            self.inventory -= int(quantity)
             self.save()
             return True
         return False
@@ -114,6 +114,7 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"Cart: {self.product.name}"  # Adjust as needed
+
     
 class PaymentMethod(models.Model):
     METHOD_CHOICES = [

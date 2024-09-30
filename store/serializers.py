@@ -53,7 +53,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ["id", "name", "slug", "products"] #Le agregamos "products" para que en un array nos traiga los productos de esta categoria
 
 class CartSerializer(serializers.ModelSerializer):
-    product = ProductData()
+    product = ProductSerializer()
     class Meta:
         model = Cart
         fields = ['id', 'product']  # Adjust fields as needed

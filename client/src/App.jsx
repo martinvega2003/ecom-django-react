@@ -22,8 +22,7 @@ function App() {
 
   return (
     <>
-        <StoreProvider >
-          <LoggedNavbar />
+        <StoreProvider >         
           <Routes>
             <Route path='/' element={<Home />}/>
             <Route path='/sign-up' element={<Signup />}/>
@@ -37,6 +36,7 @@ function App() {
             <Route path='/productos/:category_slug/:product_slug' exact element={<ProductDetails />}/>
           </Routes>
           <Footer />
+          <LoggedNavbar />
         </ StoreProvider >
     </>
   )

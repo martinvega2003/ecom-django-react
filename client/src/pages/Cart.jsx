@@ -1,15 +1,23 @@
 import "../pages-styles/Cart.css"
-import React, {useState} from 'react';
+import React, { useEffect } from 'react';
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { useStore } from "../context/storecontext";
 
 const Cart = () => {
 
-    const {cartItems} = useStore()
+    const {cartItems, setCartItems} = useStore()
 
-    //const handleRemove = (id) => {
-      //  setCartItems(cartItems.filter(item => item.product.id !== id));
-    //};
+    const deleteItem = async (id) => {
+        try {
+            await axios.delete('http://127.0.0.1:8000/api/v1/store/cart/delete/' + id + "/");
+            const updatedCart = cartItems.filter(item => item.id !== id);
+            setCartItems(updatedCart);
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+            alert("No se pudo eliminar el elemento del carrito.");
+        }
+    }
 
     return (
         <div className="section my-cart">
@@ -19,17 +27,17 @@ const Cart = () => {
             ) : (
                 <div className="cart-items">
                     {cartItems.map(item => (
-                        <Link to={`/productos/${item.product.category.slug}/${item.product.slug}`} className="cart-item">
+                        <div className="cart-item">
                             <img src={item.product.image} alt={item.product.name} className="cart-item-image" />
                             <div className="cart-item-details">
                                 <h2>{item.product.name}</h2>
                                 <p>${Number(item.product.price).toFixed(2)}</p>
                             </div>
                             <div className="btns cont">
-                                <button className="buy-button">Comprar</button>
-                                <button className="remove-button">Eliminar</button>
+                                <Link to={`/productos/${item.product.category.slug}/${item.product.slug}`} className="buy-button">Comprar</Link>
+                                <button onClick={() => deleteItem(item.product.id)} className="remove-button">Eliminar</button>
                             </div>
-                        </Link>
+                        </div>
                     ))}
                 </div>
             )}

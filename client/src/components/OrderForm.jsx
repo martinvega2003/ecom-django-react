@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import "../components-styles/OrderForm.css"
+import PaymentPopup from "./PaymentPopup";
 
 function OrderForm({ product }) {
   // Set initial states for quantity and size
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleBuyClick = (e) => {
     e.preventDefault();
-    console.log(`Quantity: ${quantity}`);
-    console.log(`Size: ${size}`);
-    // You can process form data here (send it to the backend, etc.)
+    setShowPopup(true);
   };
 
   return (
-    <form onSubmit={e => handleSubmit(e)} className="order-form">
+    <form onSubmit={handleBuyClick} className="order-form">
       {/* Quantity Field */}
       <div>
         <label htmlFor="quantity">Cantidad: </label>
@@ -51,6 +50,14 @@ function OrderForm({ product }) {
 
       {/* Submit Button */}
       <button type="submit" className="buy-btn">Comprar Ahora</button>
+
+      {showPopup && (
+        <PaymentPopup
+          product={product}
+          quantity={quantity}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
     </form>
   );
 }

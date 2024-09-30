@@ -1,0 +1,34 @@
+.payment-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.payment-popup {
+    background: black;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.payment-methods {
+    margin-top: 15px;
+}
+
+.payment-methods option {
+    color: black;
+}
+
+.payment-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}

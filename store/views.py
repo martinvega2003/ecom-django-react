@@ -169,6 +169,20 @@ def add_to_cart(request):
         # else:  # Uncomment when using authentication
         #     return Response({'message': 'Authentication required.'}, status=403)  # Uncomment when using authentication
 
+@api_view(['DELETE'])
+def delete_from_cart(request, product_id):
+    try:
+        product = Product.objects.get(id=product_id)
+        # Fetch the product in the cart by the provided product ID.
+        cart_item = Cart.objects.get(product=product)
+
+        # Delete the item from the cart.
+        cart_item.delete()
+
+        return Response({'message': 'Product removed from cart.'}, status=200)
+    except Cart.DoesNotExist:
+        return Response({'error': 'Product not found in cart.'}, status=404)
+
 class PaymentMethodViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsAuthenticated]
 
@@ -182,3 +196,24 @@ class PaymentMethodViewSet(viewsets.ModelViewSet):
         #serializer.save(user=user)  # Uncomment when user auth is implemented
         serializer.save()
         return Response(serializer.data, status=201)
+    
+@api_view(['POST'])
+def process_payment(request):
+    product_id = request.data.get('product_id')
+    quantity = request.data.get('quantity')
+    payment_method_id = request.data.get('payment_method_id')
+
+    product = get_object_or_404(Product, id=product_id)
+    payment_method = get_object_or_404(PaymentMethod, id=payment_method_id)
+
+    total_price = int(product.price) * quantity
+
+    # Simulate payment processing
+    # If payment succeeds:
+    product.reduceStock(quantity)  # Call method to reduce inventory
+    product.save()
+
+    # Save the order record
+    #Order.objects.create(user=request.user, product=product, quantity=quantity, payment_method=payment_method, total_price=total_price)
+
+    return Response({'message': 'Payment successful'}, status=200)
