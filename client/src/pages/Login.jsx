@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../pages-styles/Login.css";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -13,10 +16,16 @@ const Login = () => {
 
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/v1/store/login/', loginData);
-            alert(response.data.message); // Handle successful login
+            const { token } = response.data;
+
+            // Save token to local storage
+            localStorage.setItem('token', token);
+            alert("Login successful!");
+
             // Reset form
             setUsername('');
             setPassword('');
+            navigate("/")
         } catch (error) {
             console.error('Error logging in:', error);
             alert('Login failed. Check your credentials.');
@@ -29,12 +38,12 @@ const Login = () => {
                 <h1>Login to Your Account</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="username">Username</label>
                         <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="text"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                     </div>

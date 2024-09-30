@@ -30,6 +30,27 @@ export const LoggedNavbar = () => {
       alert(error)
     }
   }
+
+  const logoutUser = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+          alert("No token found, user may already be logged out.");
+          return;
+      }
+
+      try {
+          await axios.post('http://localhost:8000/api/v1/store/logout/', {}, {
+              headers: {
+                  'Authorization': `Token ${token}`,  // Correct token format
+              }
+          });
+          localStorage.removeItem('token');  // Clear the token
+          alert("Logout successful");
+          // Optionally, redirect or update state here
+      } catch (error) {
+          alert("Logout failed:", error.response ? error.response.data : error.message);
+      }
+  };
   
   return (
     <nav className='logged-h-cont'>
@@ -40,9 +61,11 @@ export const LoggedNavbar = () => {
         <div className="h-links">
             <Link to="/account" className='account-link'>T</Link>
             <SearchBarWrapper />
-            <button className="logout-btn">
+            <Link to="/ofertas" className='link'>ofertas</Link>
+            <Link to="/nuevo" className='white-link'>nuevo</Link>
+            {/*<button className="logout-btn" onClick={logoutUser}>
               Cerrar Sesion
-            </button>
+            </button>*/}
             <Link className='cart-link' to="/cart">carrito</Link> 
         </div>
     </nav>

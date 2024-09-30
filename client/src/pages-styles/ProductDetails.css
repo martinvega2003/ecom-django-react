@@ -1,15 +1,16 @@
 .product-details {
     width: 100%;
-    height: 100vh;
+    height: fit-content;
     padding-top: 100px;
     display: flex;
+    margin-bottom: 0px;
     align-items: center;
     justify-content: center;
 }
 
     .product-details .left {
         width: 45%;
-        height: 500px;
+        height: 300px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -31,8 +32,10 @@
 
         .product-details .right span.category {
             text-align: left;
-            font-size: 12px;
-            color: var(--light-text);
+            font-size: 15px;
+            color: var(--text);
+            padding: 8px;
+            border-bottom: 2px solid var(--text);
         }
 
         .product-details .right h2 {
@@ -80,3 +83,60 @@
             color: var(--text);
             margin: 10px 0;
         }
+
+/* --------------------------------------------------------------- */
+
+.product-info-cont {
+    max-width: 100%;
+    height: fit-content;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+    .product-info-cont .btns-cont {
+        width: 90%;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        border-bottom: 2px solid var(--black);
+    }
+
+        .product-info-cont .btns-cont button {
+            width: 15%;
+            height: fit-content;
+            background: white;
+            box-sizing: border-box;
+            padding: 20px;
+            font-size: 18px;
+            transition: all .2s linear;
+            border: none;
+        }
+
+        .product-info-cont .btns-cont button.active {
+            color: var(--green);
+            border-bottom: 4px solid var(--green);
+            margin-bottom: -3px;
+        }
+
+        .product-info-cont .btns-cont button:hover {
+            color: var(--green);
+            border-bottom: 4px solid var(--green);
+            margin-bottom: -3px;
+        }
+
+    .product-info-cont .form-cont {
+        width: 90%;
+        max-height: 600px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    

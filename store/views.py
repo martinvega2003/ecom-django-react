@@ -1,8 +1,7 @@
 # Create your views here.
 
 #Importes para el User y autenticacion:
-from django.contrib.auth import authenticate #Metodo para comprobar si el usuario existe en la BD.
-from django.contrib.auth.models import User
+from rest_framework.permissions import IsAuthenticated
 
 #Importes para la funcion de busqueda:
 from django.db.models import Q
@@ -20,30 +19,14 @@ from django.http import Http404
 from rest_framework import generics
 from rest_framework import viewsets
 from .models import Product, Category, Cart, PaymentMethod
-from .serializers import ProductSerializer, CategorySerializer, CartSerializer, PaymentMethodSerializer, UserSerializer
+from .serializers import ProductSerializer, CategorySerializer, CartSerializer, PaymentMethodSerializer
 
-#VISTAS PARA USER:
 
-class SignupView(APIView):
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save() #Se guarda el usuario en la BD
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class LoginView(APIView):
-    def post(self, request):
-        username = request.data.get('username') #Obtenemos el username del objeto que nos pasa el cliente
-        password = request.data.get('password') #Obtenemos la password del objeto que nos pasa el cliente.
-        user = authenticate(username=username, password=password) #Usamos la funcion authenticate para comprobar si el user existe en la BD y guardamos lo que retorna en una variable.
-        if user is not None:
-            return Response({"message": "Login successful!"}, status=status.HTTP_200_OK)
-        return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 #CRUDS SIMPLES DE PRODUCT Y CATEGORY:
 
 class ProductViewSet(viewsets.ModelViewSet):
+
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
@@ -120,6 +103,8 @@ class RecentProductsByCategoryView(APIView):
         return Response({"message": "No products in this category"})
     
 class ProductDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, category_slug, product_slug):
         try:
             return Product.objects.get(category__slug=category_slug, slug=product_slug) 
@@ -158,33 +143,42 @@ def search(request):
         return Response({"products": []}) #Si no existe la query, retornamos un objeto que tiene una llave products que es un array vacio
     
 class CartListView(generics.ListAPIView):
+    #permission_classes = [IsAuthenticated]
+
     # permission_classes = [permissions.IsAuthenticated]  # Uncomment when using authentication
     serializer_class = CartSerializer
 
     def get_queryset(self):
-        # return Cart.objects.filter(user=self.request.user)  # Uncomment when using authentication
+        #return Cart.objects.filter(user=self.request.user)  # Uncomment when using authentication
         return Cart.objects.all()  # For testing without user authentication
 
 @api_view(['POST'])
 def add_to_cart(request):
-    product_id = request.data.get('product_id') #de request.data se obtiene el objeto que el cliente paso al servidor, y de ahi usamos get para obtener el id del producto
-    # if request.user.is_authenticated:  # Uncomment when using authentication
-    cart_item, created = Cart.objects.get_or_create(product_id=product_id) #get si ya existe, create si no y se guarda en la variable created  # Remove user reference for testing
+    product_id = request.data['product_id']  # Make sure you're getting product id #de request.data se obtiene el objeto que el cliente paso al servidor, y de ahi usamos get para obtener el id del producto
+
+    try:
+        product = Product.objects.get(id=product_id)  # Get the actual product instance
+    except Product.DoesNotExist:
+        return Response({'error': 'Product not found.'}, status=404)
+    #if request.user.is_authenticated:  # Uncomment when using authentication
+    cart_item, created = Cart.objects.get_or_create(product=product) #get si ya existe, create si no y se guarda en la variable created  # Remove user reference for testing
     if created: #Si existe created, se guarda en el carrito, si no no.
         return Response({'message': 'Product added to cart.'}, status=201)
     else:
         return Response({'message': 'Product already in cart.'}, status=400)
-    # else:  # Uncomment when using authentication
-    #     return Response({'message': 'Authentication required.'}, status=403)  # Uncomment when using authentication
+        # else:  # Uncomment when using authentication
+        #     return Response({'message': 'Authentication required.'}, status=403)  # Uncomment when using authentication
 
 class PaymentMethodViewSet(viewsets.ModelViewSet):
+    #permission_classes = [IsAuthenticated]
+
     queryset = PaymentMethod.objects.all()
     serializer_class = PaymentMethodSerializer
 
     def create(self, request, *args, **kwargs):
-        # user = request.user  # Uncomment when user auth is implemented
+        #user = request.user  # Uncomment when user auth is implemented
         serializer = self.get_serializer(data=request.data) #get_serializer para usar el metodo get y obtener de request.data lo que ell cliente envio al servidor
         serializer.is_valid(raise_exception=True)
-        # serializer.save(user=user)  # Uncomment when user auth is implemented
+        #serializer.save(user=user)  # Uncomment when user auth is implemented
         serializer.save()
         return Response(serializer.data, status=201)

@@ -9,7 +9,7 @@ export const AddPaymentMethod = () => {
   const [selectedMethod, setSelectedMethod] = useState(0)
 
   return (
-    <div className='payment-method-form-cont'>
+    <div className='section payment-method-form-cont'>
       <div className="btns-cont">
         <button className={selectedMethod === 0 ? "active" : ""} onClick={() => setSelectedMethod(0)}>
           Credit Card

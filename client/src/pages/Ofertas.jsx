@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import { ProductCard } from '../components/ProductCard'
+import ItemCard from '../components/ItemCard'
 
 //Importes:
 import "../pages-styles/Ofertas.css"
@@ -82,11 +83,11 @@ export const Ofertas = () => {
 
         </div>
 
-        <div className="productos">
+        <div className="productos items-container">
           {
             discountedProducts.map(product => {
               return (
-                <ProductCard 
+                <ItemCard 
                   image={product.image}
                   name={product.name}
                   description={product.description}

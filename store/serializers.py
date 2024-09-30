@@ -8,13 +8,27 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {
+            'password': {'write_only': True}  # Password should only be used for write operations
+        }
 
     def create(self, validated_data):
-        user = User(**validated_data)
+        # Use `set_password` method to handle password hashing
+        user = User(
+            username=validated_data['username'],
+            email=validated_data['email']
+        )
         user.set_password(validated_data['password'])  # Hash the password
         user.save()
         return user
+    
+        #extra_kwargs = {'password': {'write_only': True}}
+
+    #def create(self, validated_data):
+    #    user = User(**validated_data)
+    #    user.set_password(validated_data['password'])  # Hash the password
+    #    user.save()
+    #    return user
 
 class CategoryData(serializers.ModelSerializer):
     class Meta:

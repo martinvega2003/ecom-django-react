@@ -1,0 +1,112 @@
+:root {
+    --main-green: #4CAF50;
+    --dark-green: #388E3C;
+    --white: #FFFFFF;
+    --dark-black: #1C1C1C;
+    --grey: #757575;
+}
+
+.footer-container {
+    background-color: var(--black);
+    color: var(--white);
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 3px solid var(--main-green);
+}
+
+.footer-content {
+    width: 100%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-section h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: var(--main-green);
+}
+
+.footer-section p,
+.footer-section a {
+    font-size: 14px;
+    color: var(--grey);
+    margin-bottom: 5px;
+}
+
+.footer-section a:hover {
+    color: var(--white);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    font-size: 18px;
+    color: var(--grey);
+}
+
+.social-links a:hover {
+    color: var(--main-green);
+}
+
+.email-signup-form {
+    display: flex;
+    gap: 10px;
+}
+
+.email-signup-form input {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    width: 200px;
+    background-color: var(--dark-black);
+    color: var(--white);
+    border: 1px solid var(--grey);
+}
+
+.email-signup-form input::placeholder {
+    color: var(--grey);
+}
+
+.email-signup-form input:focus {
+    outline: none;
+    border-color: var(--main-green);
+}
+
+.signup-button {
+    padding: 8px 15px;
+    border: none;
+    background-color: var(--main-green);
+    color: var(--white);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.signup-button:hover {
+    background-color: var(--dark-green);
+}
+
+.footer-bottom {
+    margin-top: 30px;
+    text-align: center;
+    width: 100%;
+    font-size: 12px;
+    color: var(--grey);
+}
+
+.footer-bottom p {
+    margin: 0;
+}

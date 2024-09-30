@@ -4,6 +4,7 @@ import axios from "axios"
 //Importes:
 import "../pages-styles/Nuevo.css"
 import { ProductCard } from '../components/ProductCard'
+import ItemCard from '../components/ItemCard'
 
 //ContextAPI:
 import { useStore } from '../context/storecontext'
@@ -59,11 +60,11 @@ export const Nuevo = () => {
 
         </div>
 
-        <div className="productos">
+        <div className="productos items-container">
           {
             latestProducts.map(product => {
               return (
-                <ProductCard 
+                <ItemCard 
                   image={product.image}
                   name={product.name}
                   description={product.description}

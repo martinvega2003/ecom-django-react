@@ -19,7 +19,7 @@ const Signup = () => {
         const userData = { username, email, password };
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/v1/store/signup/', userData);
+            const response = await axios.post('http://127.0.0.1:8000/api/v1/store/register/', userData);
             alert(`User created: ${response.data.username}`);
             // Reset form
             setUsername('');
@@ -33,7 +33,7 @@ const Signup = () => {
     };
 
     return (
-        <div className="signup-form-cont">
+        <div className="section signup-form-cont">
             <div className="signup-form">
                 <h1>Create an Account</h1>
                 <form onSubmit={handleSubmit}>

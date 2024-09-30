@@ -18,7 +18,7 @@ const MyAccount = () => {
     };
 
     return (
-        <div className="my-account">
+        <div className="section my-account">
             <h1>My Account</h1>
             <div className="user-info">
                 <h2>Username: {user.username}</h2>

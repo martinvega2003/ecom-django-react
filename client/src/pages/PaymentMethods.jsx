@@ -14,7 +14,7 @@ const PaymentMethods = () => {
     };
 
     return (
-        <div className="payment-methods">
+        <div className="section payment-methods">
             <h1>Payment Methods</h1>
             {paymentMethods.length === 0 ? (
                 <p>You have no saved payment methods.</p>

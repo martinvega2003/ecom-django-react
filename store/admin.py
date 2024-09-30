@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category, Size
+from .models import Product, Category, Size, Cart, PaymentMethod
 from django import forms
 
 class ProductAdminForm(forms.ModelForm):
@@ -21,4 +21,6 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Size)
+admin.site.register(Cart)
 admin.site.register(Category)
+admin.site.register(PaymentMethod)

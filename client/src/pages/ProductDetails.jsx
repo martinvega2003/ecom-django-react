@@ -8,6 +8,7 @@ import OrderForm from "../components/OrderForm";
 export function ProductDetails() {
   const { category_slug, product_slug } = useParams(); // Get slugs from the URL
   const [product, setProduct] = useState({});
+  const [selectedView, setSelectedView] = useState(0)
 
   useEffect(() => {
     fetchProduct();
@@ -40,33 +41,65 @@ export function ProductDetails() {
   };
 
   return (
-    <div className="product-details">
-        <div className="left">
-            <img src={product.image} alt={product.name} />
-        </div>
+    <>
+      <div className="section product-details">
+          <div className="left">
+              <img src={product.image} alt={product.name} />
+          </div>
 
-        <div className="right">
-            { /*<span className="category">
-                {product.category.name}
-            </span> */}
-            <h2>
-                {product.name}
-            </h2>
-            <span className="price">
-                {product.price} Gs.
-            </span>
-            <OrderForm product={product} /> 
-            <button className="add-cart-btn" onClick={addToCart}>
-                Agregar al carrito
-            </button>
-            <span>
-                Detalles del producto
-            </span>
-            <p>
-                {product.description}
-            </p>
+          <div className="right">
+              <span className="category">
+                {category_slug}
+              </span>
+              <h2>
+                  {product.name}
+              </h2>
+              <span className="price">
+                  {product.price} Gs.
+              </span>
+              <OrderForm product={product} /> 
+              <button className="add-cart-btn" onClick={addToCart}>
+                  Agregar al carrito
+              </button>
+              <span>
+                  Detalles del producto
+              </span>
+              <p>
+                  {product.description}
+              </p>
+          </div>
+      </div>
+
+      <div className='product-info-cont'>
+        <div className="btns-cont">
+          <button className={selectedView === 0 ? "active" : ""} onClick={() => setSelectedView(0)}>
+            Mas detalles
+          </button>
+          <button className={selectedView === 1 ? "active" : ""} onClick={() => setSelectedView(1)}>
+            Envios
+          </button>
+          <button className={selectedView === 2 ? "active" : ""} onClick={() => setSelectedView(2)}>
+            Relacionados
+          </button>
         </div>
-    </div>
+        <div className="form-cont">
+          {
+            selectedView === 0 ? (
+              <div className="details-long">
+                Details long
+              </div>
+            ) : selectedView === 1 ? (
+              <div className="shipping">
+                Shipping
+              </div>
+            ) : <div className="related">
+                  Related
+                </div>
+          } 
+        </div>
+      </div>
+      
+    </>
   );
 }
 

@@ -1,5 +1,6 @@
 import "../pages-styles/Cart.css"
 import React, {useState} from 'react';
+import { Link } from "react-router-dom";
 import { useStore } from "../context/storecontext";
 
 const Cart = () => {
@@ -11,14 +12,14 @@ const Cart = () => {
     //};
 
     return (
-        <div className="my-cart">
+        <div className="section my-cart">
             <h1>My Cart</h1>
             {cartItems.length === 0 ? (
                 <p>Your cart is empty.</p>
             ) : (
                 <div className="cart-items">
                     {cartItems.map(item => (
-                        <div key={item.id} className="cart-item">
+                        <Link to={`/productos/${item.product.category.slug}/${item.product.slug}`} className="cart-item">
                             <img src={item.product.image} alt={item.product.name} className="cart-item-image" />
                             <div className="cart-item-details">
                                 <h2>{item.product.name}</h2>
@@ -28,7 +29,7 @@ const Cart = () => {
                                 <button className="buy-button">Comprar</button>
                                 <button className="remove-button">Eliminar</button>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             )}

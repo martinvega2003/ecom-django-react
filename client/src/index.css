@@ -1,8 +1,20 @@
 :root {
-    --black: rgb(17, 15, 15);
+    /* --black: rgb(17, 15, 15);
     --green: rgb(11, 170, 11);
     --dark-green: rgb(18, 119, 18);
     --page-bg: #fefefe;
-    --text: rgb(192, 189, 189);
-    --light-text: rgb(202, 200, 200);
+    --text: rgb(192, 189, 189); */
+    --black: #1C1C1C;
+    --light-text: rgb(202, 200, 200); 
+    --green: #2ECC71;   /* Fresh green for buttons, highlights */
+    --dark-green: #27AE60;     /* Darker green for hover effects, emphasis */
+    --dark-blue: #2C3E50;     /* Dark black for main text */
+    --text: #95A5A6;      /* Grey for secondary text or muted sections */
+}
+
+.section {
+    height: fit-content;
+    width: 100%;
+    background: white;
+    padding: 150px 50px;
 }
