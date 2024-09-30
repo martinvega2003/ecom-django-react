@@ -16,11 +16,32 @@ h1 {
 }
 
 .payment-method {
+    width: 35%;
     border: 1px solid var(--dark-green);
     padding: 15px;
     border-radius: 5px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: var(--light-green);
+    transition: all .2s linear;
+    cursor: pointer;
+}
+
+.payment-method:hover {
+    scale: 1.03;
+}
+
+.payment-method .info {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.payment-method p {
+    margin: 10px 10px 10px 0;
 }
 
 .payment-method .remove-btn {

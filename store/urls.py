@@ -33,6 +33,7 @@ urlpatterns = [
 
     #urls para pagos:
     path("payment-methods/", include(paymentMethodsRouter.urls)),
+    path("payment-methods/delete/<int:method_id>/", views.delete_payment_method, name="delete_payment_method"),
     path("process-payment/", views.process_payment, name="process_payment"),
 
     #urls para la busqueda:

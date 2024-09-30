@@ -217,3 +217,15 @@ def process_payment(request):
     #Order.objects.create(user=request.user, product=product, quantity=quantity, payment_method=payment_method, total_price=total_price)
 
     return Response({'message': 'Payment successful'}, status=200)
+
+@api_view(['DELETE'])
+def delete_payment_method(request, method_id):
+    try:
+        method = PaymentMethod.objects.get(id=method_id)
+
+        # Delete the item from the cart.
+        method.delete()
+
+        return Response({'message': 'Payment method deleted.'}, status=200)
+    except:
+        return Response({'error': 'Couldnt delete payment method.'}, status=404)
