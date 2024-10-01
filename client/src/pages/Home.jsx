@@ -13,21 +13,28 @@ export const Home = () => {
   return (
     <div className='section home-cont'>
       <FilterMenu />
-      <div className="items-container">
+      <div className="">
         {
-          searchedProducts.map(product => {
-            return (
-              <ItemCard 
-                image={product.image}
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                productSlug={product.slug}
-                categorySlug={product.category.slug}
-              />
+          searchedProducts.length === 0 ? (<div className='empty-search'><h2>No se encontraron productos que coincidan con tu busqueda</h2></div>) : 
+          ( <div className="items-container">
+            {
+          
+              searchedProducts.map(product => {
+                return (
+                  <ItemCard 
+                    image={product.image}
+                    name={product.name}
+                    description={product.description}
+                    price={product.price}
+                    productSlug={product.slug}
+                    categorySlug={product.category.slug}
+                  />
+                )
+              }
             )
-          })
-        }
+          }
+        </div>
+        )}
       </div>
     </div>
   )

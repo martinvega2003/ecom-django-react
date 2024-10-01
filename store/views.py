@@ -18,8 +18,8 @@ from django.http import Http404
 
 from rest_framework import generics
 from rest_framework import viewsets
-from .models import Product, Category, Cart, PaymentMethod
-from .serializers import ProductSerializer, CategorySerializer, CartSerializer, PaymentMethodSerializer
+from .models import Product, Category, Cart, PaymentMethod, Order
+from .serializers import ProductSerializer, CategorySerializer, CartSerializer, PaymentMethodSerializer, OrderSerializer
 
 
 
@@ -229,3 +229,35 @@ def delete_payment_method(request, method_id):
         return Response({'message': 'Payment method deleted.'}, status=200)
     except:
         return Response({'error': 'Couldnt delete payment method.'}, status=404)
+    
+#VISTAS PARA EL MODELO ORDER:
+
+@api_view(['GET'])
+def get_orders(request):
+    orders = Order.objects.all()
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data, status=200)
+
+@api_view(['POST'])
+def create_order(request):
+    product_id = request.data.get('product_id')
+    total_amount = request.data.get('amount')
+
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        return Response({"error": "Product not found"}, status=404)
+    
+    # Create the order
+    order = Order.objects.create(
+        product_name=product.name,
+        total_amount=total_amount
+    )
+
+    return Response({
+        "message": "Order created successfully",
+        "order_number": order.order_number,
+        "product_name": order.product_name,
+        "total_amount": order.total_amount,
+        "date": order.date
+    }, status=201)

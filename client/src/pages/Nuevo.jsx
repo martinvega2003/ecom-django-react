@@ -62,7 +62,7 @@ export const Nuevo = () => {
 
         <div className="productos items-container">
           {
-            latestProducts.map(product => {
+            latestProducts.length === 0 ? (<div className='empty-category'><h2>No hay productos en oferta en esta categoria</h2></div>) : latestProducts.map(product => {
               return (
                 <ItemCard 
                   image={product.image}

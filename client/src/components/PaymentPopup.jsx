@@ -30,10 +30,14 @@ const PaymentPopup = ({ product, quantity, onClose }) => {
                 alert("No hay suficientes productos en inventario")
                 return;
             }
-            const response = await axios.post('http://127.0.0.1:8000/api/v1/store/process-payment/', {
+            await axios.post('http://127.0.0.1:8000/api/v1/store/process-payment/', {
                 product_id: product.id,
                 quantity,
                 payment_method_id: selectedMethod,
+            });
+            await axios.post('http://127.0.0.1:8000/api/v1/store/create-order/', {
+                product_id: product.id,
+                amount: totalAmount,
             });
             alert('Payment successful!');
             onClose();

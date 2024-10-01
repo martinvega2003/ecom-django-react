@@ -85,7 +85,7 @@ export const Ofertas = () => {
 
         <div className="productos items-container">
           {
-            discountedProducts.map(product => {
+            discountedProducts.length === 0 ? (<div className='empty-category'><h2>No hay productos en oferta en esta categoria</h2></div>) : discountedProducts.map(product => {
               return (
                 <ItemCard 
                   image={product.image}

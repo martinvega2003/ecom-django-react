@@ -1,6 +1,19 @@
 .home-cont {
-    width: 100%;
-    height: 100vh;
+    max-width: 100%;
+    height: fit-content;
     background: var(--black);
     
 }
+
+    .home-cont div.empty-search {
+        width: 100%;
+        min-height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .home-cont div.empty-search h2 {
+            width: 100%;
+            text-align: center;
+        }

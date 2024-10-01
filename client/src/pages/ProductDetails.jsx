@@ -4,14 +4,17 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; //Para obtener datos de la url
 import axios from "axios";
 import OrderForm from "../components/OrderForm";
+import { RelatedProducts } from "../components/RelatedProducts";
 
 export function ProductDetails() {
   const { category_slug, product_slug } = useParams(); // Get slugs from the URL
   const [product, setProduct] = useState({});
   const [selectedView, setSelectedView] = useState(0)
+  const [relatedProducts, setRelatedProducts] = useState([])
 
   useEffect(() => {
     fetchProduct();
+    fetchRelatedProducts();
   }, [category_slug, product_slug]); // Refetch if the slugs change
 
   // Fetch the product data from your Django API using the slugs
@@ -23,6 +26,15 @@ export function ProductDetails() {
       console.error('Error fetching product:', error);
     }
   };
+
+  const fetchRelatedProducts = async () => {
+    try {
+      const res = await axios.get(`http://127.0.0.1:8000/api/v1/store/categories/${category_slug}/`);    
+      setRelatedProducts(res.data.products.filter(item => item.id !== product.id));
+    } catch (error) {
+      console.error('Error fetching related products:', error);
+    }
+  }
 
   if (!product) {
     return <div>Loading...</div>;
@@ -93,7 +105,7 @@ export function ProductDetails() {
                 Shipping
               </div>
             ) : <div className="related">
-                  Related
+                  <RelatedProducts relatedProducts={relatedProducts} />
                 </div>
           } 
         </div>

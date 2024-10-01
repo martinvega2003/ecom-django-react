@@ -1,21 +1,32 @@
 // src/pages/MyAccount.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "../pages-styles/MyAccount.css";
 import { useStore } from '../context/storecontext';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const MyAccount = () => {
     const { cartItems } = useStore();
+    const [orders, setOrders] = useState([])
+
+    useEffect(() => {
+        fetchOrders()
+    }, [])
 
     // Mock user data
     const user = {
         username: "JohnDoe",
         email: "johndoe@example.com",
-        orders: [
-            { id: 1, items: ["Product 1", "Product 2"], total: 50.00 },
-            { id: 2, items: ["Product 3"], total: 30.00 },
-        ],
     };
+
+    const fetchOrders = async () => {
+        try {
+            const res = await axios.get('http://127.0.0.1:8000/api/v1/store/orders/')
+            setOrders(res.data)
+        } catch (error) {
+            alert("Error fetching the orders")
+        }
+    }
 
     return (
         <div className="section my-account">
@@ -26,13 +37,13 @@ const MyAccount = () => {
             </div>
             <div className="orders">
                 <h3>Your Orders</h3>
-                {user.orders.length === 0 ? (
+                {orders.length === 0 ? (
                     <p>You have no orders yet.</p>
                 ) : (
                     <ul>
-                        {user.orders.map(order => (
-                            <li key={order.id}>
-                                Order #{order.id}: {order.items.join(", ")} - ${order.total.toFixed(2)}
+                        {orders.map(order => (
+                            <li key={Number(order.order_number)}>
+                                Order #{order.order_number}: {order.product_name} - Gs. {order.total_amount} - Fecha: {order.date}
                             </li>
                         ))}
                     </ul>

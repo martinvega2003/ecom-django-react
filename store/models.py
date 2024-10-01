@@ -2,6 +2,8 @@
 from io import BytesIO
 from PIL import Image
 from django.core.files import File
+from django.utils import timezone
+from django.db.models import Count
 
 from django.db import models
 
@@ -28,6 +30,20 @@ class Size(models.Model):
     def __str__(self):
         return self.value
 
+class Shipping(models.Model):
+    DELIVERY_CHOICES = [
+        ('10_days', '10 Days Delivery'),
+        ('1_week', '1 Week Delivery'),
+        ('2_3_days', '2-3 Days Delivery')
+    ]
+    
+    delivery_time = models.CharField(max_length=10, choices=DELIVERY_CHOICES, default='10_days')
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    free_shipping = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.get_delivery_time_display()} - Price: {self.price} - Free Shipping: {'Yes' if self.free_shipping else 'No'}"
+
 class Product(models.Model):
 
     class ProductType(models.TextChoices):
@@ -49,6 +65,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="uploads/", blank=True, null=True)
     thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
     addedDate = models.DateField(auto_now_add=True)
+    shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name="products")
     slug = models.SlugField()
 
     class Meta:
@@ -129,3 +146,19 @@ class PaymentMethod(models.Model):
 
     def __str__(self):
         return f"{self.method_type} - {self.details}"
+
+class Order(models.Model):
+    order_number = models.PositiveIntegerField(unique=True)
+    product_name = models.CharField(max_length=255)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Order {self.order_number} - {self.product_name} - {self.total_amount}"
+
+    def save(self, *args, **kwargs):
+        if not self.order_number:
+            # Automatically assign an order number by counting the total number of orders + 1
+            last_order = Order.objects.aggregate(count=Count('id'))
+            self.order_number = last_order['count'] + 1
+        super(Order, self).save(*args, **kwargs)

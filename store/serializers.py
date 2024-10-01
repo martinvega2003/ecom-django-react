@@ -2,7 +2,7 @@
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Product, Category, Cart, PaymentMethod
+from .models import Product, Category, Cart, PaymentMethod, Order
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,3 +62,8 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentMethod
         fields = ['id', 'method_type', 'details']
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['order_number', 'product_name', 'total_amount', 'date']

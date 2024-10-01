@@ -1,0 +1,9 @@
+.related-products {
+    min-width: 90%;
+    height: fit-content;
+    overflow-x: scroll;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+}

@@ -43,4 +43,8 @@ urlpatterns = [
     path('cart/', views.CartListView.as_view(), name='cart-list'),
     path('cart/add/', views.add_to_cart, name='add-to-cart'),
     path('cart/delete/<int:product_id>/', views.delete_from_cart, name='delete-from-cart'),
+
+    #urls para las ordenes:
+    path('orders/', views.get_orders, name='get-orders'),
+    path('create-order/', views.create_order, name='create-order'),
 ]
