@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../components-styles/PaymentPopup.css"
+import { useStore } from '../context/storecontext';
 
 
-const PaymentPopup = ({ product, quantity, onClose }) => {
+const PaymentPopup = ({ product, quantity, selectedOption, onClose }) => {
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [selectedMethod, setSelectedMethod] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const totalAmount = product.price * quantity;
+    //const totalAmount = product.price * quantity;
+    const {totalPrice, setTotalPrice} = useStore()
 
     useEffect(() => {
         const fetchPaymentMethods = async () => {
@@ -37,9 +39,11 @@ const PaymentPopup = ({ product, quantity, onClose }) => {
             });
             await axios.post('http://127.0.0.1:8000/api/v1/store/create-order/', {
                 product_id: product.id,
-                amount: totalAmount,
+                amount: totalPrice,
+                shipping_option: selectedOption,
             });
             alert('Payment successful!');
+            setTotalPrice(0)
             onClose();
         } catch (error) {
             console.error('Payment failed', error);
@@ -55,7 +59,7 @@ const PaymentPopup = ({ product, quantity, onClose }) => {
                 <h2>Confirm Payment</h2>
                 <p>Product: {product.name}</p>
                 <p>Quantity: {quantity}</p>
-                <p>Total: ${totalAmount}</p>
+                <p>Total: Gs {totalPrice}</p>
 
                 <div className="payment-methods">
                     <label>Select Payment Method:</label>

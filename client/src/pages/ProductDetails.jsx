@@ -5,17 +5,24 @@ import { useParams } from 'react-router-dom'; //Para obtener datos de la url
 import axios from "axios";
 import OrderForm from "../components/OrderForm";
 import { RelatedProducts } from "../components/RelatedProducts";
+import ShippingOptions from "../components/ShippingSelection";
 
 export function ProductDetails() {
   const { category_slug, product_slug } = useParams(); // Get slugs from the URL
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState(null);
   const [selectedView, setSelectedView] = useState(0)
   const [relatedProducts, setRelatedProducts] = useState([])
+  const [selectedOption, setSelectedOption] = useState(1);
 
   useEffect(() => {
     fetchProduct();
-    fetchRelatedProducts();
   }, [category_slug, product_slug]); // Refetch if the slugs change
+
+  useEffect(() => {
+    if (product) {
+      fetchRelatedProducts();
+    }
+  }, [product]); // Fetch related products only after product is set
 
   // Fetch the product data from your Django API using the slugs
   const fetchProduct = async () => {
@@ -23,7 +30,7 @@ export function ProductDetails() {
       const res = await axios.get(`http://127.0.0.1:8000/api/v1/store/products/${category_slug}/${product_slug}/`);
       setProduct(res.data);
     } catch (error) {
-      console.error('Error fetching product:', error);
+      alert('Error fetching product:', error);
     }
   };
 
@@ -69,16 +76,13 @@ export function ProductDetails() {
               <span className="price">
                   {product.price} Gs.
               </span>
-              <OrderForm product={product} /> 
+              <OrderForm product={product} selectedOption={selectedOption} /> 
               <button className="add-cart-btn" onClick={addToCart}>
                   Agregar al carrito
               </button>
               <span>
                   Detalles del producto
               </span>
-              <p>
-                  {product.description}
-              </p>
           </div>
       </div>
 
@@ -97,12 +101,10 @@ export function ProductDetails() {
         <div className="form-cont">
           {
             selectedView === 0 ? (
-              <div className="details-long">
-                Details long
-              </div>
+              <div className="details-long" dangerouslySetInnerHTML={{ __html: product.description }} />
             ) : selectedView === 1 ? (
               <div className="shipping">
-                Shipping
+                <ShippingOptions product={product} setSelectedOption={setSelectedOption} />
               </div>
             ) : <div className="related">
                   <RelatedProducts relatedProducts={relatedProducts} />

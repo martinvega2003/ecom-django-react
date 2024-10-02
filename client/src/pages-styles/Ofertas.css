@@ -127,6 +127,11 @@
                 border-bottom: 3px solid transparent;
             }
 
+            .ofertas-cont .ofertas-contenido .categorias button.active {
+                border-bottom: 3px solid var(--green);
+                color: green;
+            }
+
             .ofertas-cont .ofertas-contenido .categorias button:hover {
                 border-bottom: 3px solid var(--green);
                 color: green;

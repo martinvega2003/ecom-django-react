@@ -1,6 +1,22 @@
 .related-products {
     min-width: 90%;
     height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.related-products p {
+    width: 100%;
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+    padding: 60px 10px;
+}
+
+.related-products div {
+    min-width: 100%;
+    height: fit-content;
     overflow-x: scroll;
     display: flex;
     flex-wrap: nowrap;

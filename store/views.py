@@ -242,6 +242,7 @@ def get_orders(request):
 def create_order(request):
     product_id = request.data.get('product_id')
     total_amount = request.data.get('amount')
+    shipping_option = request.data.get("shipping_option")
 
     try:
         product = Product.objects.get(id=product_id)
@@ -251,7 +252,8 @@ def create_order(request):
     # Create the order
     order = Order.objects.create(
         product_name=product.name,
-        total_amount=total_amount
+        total_amount=total_amount,
+        shipping_option=shipping_option
     )
 
     return Response({

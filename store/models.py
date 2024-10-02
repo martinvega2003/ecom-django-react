@@ -24,48 +24,28 @@ class Category(models.Model):
     def get_absolute_url(self): #
         return "/" + {self.slug} + "/"
 
-class Size(models.Model):
-    value = models.CharField(max_length=10)
-
-    def __str__(self):
-        return self.value
-
-class Shipping(models.Model):
-    DELIVERY_CHOICES = [
-        ('10_days', '10 Days Delivery'),
-        ('1_week', '1 Week Delivery'),
-        ('2_3_days', '2-3 Days Delivery')
-    ]
-    
-    delivery_time = models.CharField(max_length=10, choices=DELIVERY_CHOICES, default='10_days')
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    free_shipping = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.get_delivery_time_display()} - Price: {self.price} - Free Shipping: {'Yes' if self.free_shipping else 'No'}"
-
 class Product(models.Model):
-
-    class ProductType(models.TextChoices):
-        TSHIRT = 'TS', 'T-Shirt'
-        SHOE = 'SH', 'Shoe'
+    GENDER_CHOICES = [
+        ('Hombre', 'Hombre'),
+        ('Mujer', 'Mujer'),
+        ('Unisex', 'Unisex'),
+    ]
 
     name = models.CharField(max_length=100)
     inventory = models.PositiveIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='Unisex')
     description = models.TextField(blank=True, null=True)
     isDiscounted = models.BooleanField(default=False)
-    product_type = models.CharField(
-        max_length=2,
-        choices=ProductType.choices,
-        default=ProductType.TSHIRT
+    size = models.JSONField(
+        models.FloatField(),
+        blank=True, 
+        default=list
     )
-    sizes = models.ManyToManyField('Size', related_name='products')
     image = models.ImageField(upload_to="uploads/", blank=True, null=True)
-    thumbnail = models.ImageField(upload_to="uploads/", blank=True, null=True)
     addedDate = models.DateField(auto_now_add=True)
-    shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name="products")
+    freeShipping = models.BooleanField(default=False)
     slug = models.SlugField()
 
     class Meta:
@@ -151,6 +131,7 @@ class Order(models.Model):
     order_number = models.PositiveIntegerField(unique=True)
     product_name = models.CharField(max_length=255)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping_option = models.PositiveSmallIntegerField(default=1)
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

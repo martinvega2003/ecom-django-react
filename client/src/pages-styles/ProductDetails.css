@@ -139,4 +139,9 @@
         justify-content: center;
     }
 
+        .product-info-cont .form-cont .details-long {
+            padding: 30px 0;
+            font-family:'Times New Roman', Times, serif;
+        }
+
     

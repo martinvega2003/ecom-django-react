@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../components-styles/OrderForm.css"
 import PaymentPopup from "./PaymentPopup";
+import { useStore } from "../context/storecontext";
 
-function OrderForm({ product }) {
+function OrderForm({ product, selectedOption }) {
   // Set initial states for quantity and size
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const {totalPrice, setTotalPrice} = useStore()
+
+  useEffect(() => {
+    setTotalPrice(product.price * quantity)
+  }, [])
 
   const handleBuyClick = (e) => {
     e.preventDefault();
@@ -33,7 +39,7 @@ function OrderForm({ product }) {
         <fieldset>
             <legend>Tamaño:</legend>
             <div className="size-toggle-list">
-                {["S", "M", "L", "XL", "XXL"].map((option) => (
+                {product.size.map((option) => (
                     <button
                         type="button"
                         key={option}
@@ -54,6 +60,7 @@ function OrderForm({ product }) {
       {showPopup && (
         <PaymentPopup
           product={product}
+          selectedOption={selectedOption}
           quantity={quantity}
           onClose={() => setShowPopup(false)}
         />

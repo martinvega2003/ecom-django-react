@@ -24,7 +24,6 @@ export const Home = () => {
                   <ItemCard 
                     image={product.image}
                     name={product.name}
-                    description={product.description}
                     price={product.price}
                     productSlug={product.slug}
                     categorySlug={product.category.slug}

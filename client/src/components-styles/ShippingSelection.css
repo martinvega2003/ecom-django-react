@@ -1,0 +1,30 @@
+.shipping-options {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px 0;
+  }
+  
+  .shipping-options h3 {
+    margin-bottom: 10px;
+  }
+  
+    .shipping-options .option {
+    margin-bottom: 10px;
+  }
+  
+  .shipping-options .option input {
+    margin-right: 10px;
+  }
+  
+  .shipping-options label {
+    font-size: 16px;
+  }
+  
+  .shipping-options p {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  

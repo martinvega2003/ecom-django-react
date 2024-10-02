@@ -18,21 +18,23 @@ export const Nuevo = () => {
   const {selectedCategory, setSelectedCategory, categories} = useStore() //Obtenemos esto del contexto Store
 
   useEffect(() => {
-    fetchLatestProducts()
+    fetchLatestProductsGPT()
   }, [selectedCategory])
 
-  const fetchLatestProducts = async () => {
+  const fetchLatestProductsGPT = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/v1/store/products/new/' + selectedCategory)   
-      if (res.data instanceof Array) {
-        setLatestProducts(res.data)
+      const res = await axios.get(`http://127.0.0.1:8000/api/v1/store/products/new/${selectedCategory}`);
+      console.log(res.data); // Check the fetched data
+
+      if (Array.isArray(res.data)) {
+        setLatestProducts(res.data); // Set latest products if response is an array
       } else {
-        errorMessage = res.data.message
+        setLatestProducts([])
       }
     } catch (error) {
-      alert("Error tratando de llamar a la base de datos: ", error)
+      alert("Error fetching data from the database: " + error); // Show error if fetch fails
     }
-  }
+  };
 
   return (
     <div className='nuevo-cont'>
@@ -51,7 +53,7 @@ export const Nuevo = () => {
           {
             categories.map(category => {
               return (
-                <button onClick={() => setSelectedCategory(category.id)}>
+                <button className={selectedCategory === category.id ? "active" : ""} onClick={() => setSelectedCategory(category.id)}>
                   {category.name}
                 </button>
               )
@@ -67,7 +69,6 @@ export const Nuevo = () => {
                 <ItemCard 
                   image={product.image}
                   name={product.name}
-                  description={product.description}
                   price={product.price}
                   productSlug={product.slug}
                   categorySlug={product.category.slug}

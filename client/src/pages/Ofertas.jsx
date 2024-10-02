@@ -74,7 +74,7 @@ export const Ofertas = () => {
           {
             categories.map(category => {
               return (
-                <button onClick={() => setSelectedCategory(category.id)}>
+                <button className={selectedCategory === category.id ? "active" : ""} onClick={() => setSelectedCategory(category.id)}>
                   {category.name}
                 </button>
               )
@@ -90,7 +90,6 @@ export const Ofertas = () => {
                 <ItemCard 
                   image={product.image}
                   name={product.name}
-                  description={product.description}
                   price={product.price}
                   productSlug={product.slug}
                   categorySlug={product.category.slug}
