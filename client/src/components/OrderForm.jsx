@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "../components-styles/OrderForm.css"
 import PaymentPopup from "./PaymentPopup";
-import { useStore } from "../context/storecontext";
 
-function OrderForm({ product, selectedOption }) {
+function OrderForm({ product, selectedOption, shippingCost }) {
   // Set initial states for quantity and size
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const {totalPrice, setTotalPrice} = useStore()
+  const [finalPrice, setFinalPrice] = useState(0)
 
   useEffect(() => {
-    setTotalPrice(product.price * quantity)
-  }, [])
+    setFinalPrice((product.price * quantity) + shippingCost)
+  }, [quantity, product.price, shippingCost])
 
   const handleBuyClick = (e) => {
     e.preventDefault();
@@ -59,6 +58,8 @@ function OrderForm({ product, selectedOption }) {
 
       {showPopup && (
         <PaymentPopup
+          finalPrice={finalPrice}
+          setFinalPrice={setFinalPrice}
           product={product}
           selectedOption={selectedOption}
           quantity={quantity}

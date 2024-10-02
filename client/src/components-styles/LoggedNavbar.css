@@ -17,6 +17,9 @@
         background: transparent;
         border: none;
         margin: 15px;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
     }
 
         .logged-h-cont .logo-cont .icon {
@@ -48,6 +51,9 @@
             padding: 15px;
             margin: 10px;
             font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 50px;
             text-decoration: none;
             transition: all .2s linear;
@@ -114,6 +120,9 @@
             padding: 17px 25px;
             margin: 10px;
             font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
             border-radius: 50px;
             text-decoration: none;
             transition: all .2s linear;

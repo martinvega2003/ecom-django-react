@@ -21,7 +21,7 @@
         color: var(--text);
     }
 
-    .search-bar button {
+    .search-bar .search-btn {
         width: 50px;
         height: 50px;
         background: var(--green);
@@ -30,8 +30,11 @@
         border-radius: 100%;
         border: none;
         transition: all .2s linear;
+        transition: transform 0.3s ease-in-out;
+        cursor: pointer;
     }
 
-    .search-bar button:hover {
+    .search-bar .search-btn:hover {
         background: var(--dark-green);
+        transform: rotate(360deg);
     }

@@ -67,6 +67,8 @@ export const Nuevo = () => {
             latestProducts.length === 0 ? (<div className='empty-category'><h2>No hay productos en oferta en esta categoria</h2></div>) : latestProducts.map(product => {
               return (
                 <ItemCard 
+                  isDiscounted={product.isDiscounted}
+                  discountPrice={product.discountPrice}
                   image={product.image}
                   name={product.name}
                   price={product.price}

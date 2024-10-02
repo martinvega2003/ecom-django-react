@@ -13,7 +13,7 @@ export const Ofertas = () => {
 
   //const [categories, setCategories] = useState([])
   const [discountedProducts, setDiscountedProducts] = useState([])
-  let errorMessage = ""
+  const [highestDiscountProduct, setHighestDiscountProduct] = useState(null)
 
   const {selectedCategory, setSelectedCategory, categories} = useStore() //Obtenemos esto del contexto Store
 
@@ -26,9 +26,27 @@ export const Ofertas = () => {
     try {
       const res = await axios.get('http://127.0.0.1:8000/api/v1/store/products/' + selectedCategory)   
       if (res.data instanceof Array) {
-        setDiscountedProducts(res.data)
+        const filteredProducts = res.data.filter(product => product.isDiscounted);
+        setDiscountedProducts(filteredProducts)
+
+        let maxDiscountProduct = null;
+
+        filteredProducts.map(product => {
+          const discountPercentage = ((product.price - product.discountPrice) / product.price) * 100;
+          if (!maxDiscountProduct || discountPercentage > maxDiscountProduct.discountPercentage) {
+            maxDiscountProduct = {
+              ...product,
+              discountPercentage: discountPercentage.toFixed(0), // Store percentage as string for better formatting
+            };
+          }
+          return {
+            ...product,
+            discountPercentage: discountPercentage.toFixed(0), // Add the discount percentage to the product object
+          };
+        });
+
+        setHighestDiscountProduct(maxDiscountProduct);
       } else {
-        errorMessage = res.data.message
         setDiscountedProducts([])
       }
     } catch (error) {
@@ -40,27 +58,28 @@ export const Ofertas = () => {
     <div className='ofertas-cont'>
       <div className="ofertas-encabezado">
         <div className="texto">
-          <h2>
-            Gran Oferta
-          </h2>
+          {highestDiscountProduct && (
+            <>
+              <h2>
+                {highestDiscountProduct.discountPercentage}% DE DESCUENTO
+              </h2>
 
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-            Assumenda corrupti asperiores magnam sed exercitationem impedit 
-            obcaecati veniam culpa, facere perspiciatis libero sint maxime 
-            consectetur natus a! Cumque saepe .
-          </p>
+              <p>
+                Compra tus <strong>{highestDiscountProduct.name}</strong> ahora mismo y aprovecha el <strong>{highestDiscountProduct.discountPercentage}% de descuento</strong> que tienen solo 
+                por tiempo limitado.
+              </p>
 
-          <div>
-            <button className="more-btn">
-              mas informacion 
-            </button>
+              <div>
+                <button className="more-btn">
+                  mas informacion 
+                </button>
 
-            <button className="add-cart-btn">
-              Agregar al carrito
-            </button>
-          </div>
-
+                <button className="add-cart-btn">
+                  Agregar al carrito
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="imagen">
@@ -88,6 +107,8 @@ export const Ofertas = () => {
             discountedProducts.length === 0 ? (<div className='empty-category'><h2>No hay productos en oferta en esta categoria</h2></div>) : discountedProducts.map(product => {
               return (
                 <ItemCard 
+                  isDiscounted={product.isDiscounted}
+                  discountPrice={product.discountPrice}
                   image={product.image}
                   name={product.name}
                   price={product.price}

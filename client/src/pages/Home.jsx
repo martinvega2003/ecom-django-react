@@ -22,6 +22,8 @@ export const Home = () => {
               searchedProducts.map(product => {
                 return (
                   <ItemCard 
+                    isDiscounted={product.isDiscounted}
+                    discountPrice={product.discountPrice}
                     image={product.image}
                     name={product.name}
                     price={product.price}

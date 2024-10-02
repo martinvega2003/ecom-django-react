@@ -13,6 +13,7 @@ export function ProductDetails() {
   const [selectedView, setSelectedView] = useState(0)
   const [relatedProducts, setRelatedProducts] = useState([])
   const [selectedOption, setSelectedOption] = useState(1);
+  const [shippingCost, setShippingCost] = useState(0)
 
   useEffect(() => {
     fetchProduct();
@@ -76,7 +77,7 @@ export function ProductDetails() {
               <span className="price">
                   {product.price} Gs.
               </span>
-              <OrderForm product={product} selectedOption={selectedOption} /> 
+              <OrderForm product={product} shippingCost={shippingCost} selectedOption={selectedOption} /> 
               <button className="add-cart-btn" onClick={addToCart}>
                   Agregar al carrito
               </button>
@@ -104,7 +105,7 @@ export function ProductDetails() {
               <div className="details-long" dangerouslySetInnerHTML={{ __html: product.description }} />
             ) : selectedView === 1 ? (
               <div className="shipping">
-                <ShippingOptions product={product} setSelectedOption={setSelectedOption} />
+                <ShippingOptions shippingCost={shippingCost} setShippingCost={setShippingCost} product={product} setSelectedOption={setSelectedOption} />
               </div>
             ) : <div className="related">
                   <RelatedProducts relatedProducts={relatedProducts} />

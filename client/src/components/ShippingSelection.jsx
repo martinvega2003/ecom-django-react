@@ -1,15 +1,11 @@
 import "../components-styles/ShippingSelection.css"; 
-import { useStore } from "../context/storecontext";
 
 import React, { useState } from 'react';
 
-const ShippingOptions = ({ product, setSelectedOption }) => {
-  const [shippingCost, setShippingCost] = useState(0);
-  const {totalPrice, setTotalPrice} = useStore()
+const ShippingOptions = ({ product, setSelectedOption, shippingCost, setShippingCost }) => {
 
   const handleShippingChange = (option) => {
     setSelectedOption(option);
-    setTotalPrice(totalPrice - shippingCost)
     
     if (option === '10-days' && product.free_shipping) {
       setShippingCost(0);
@@ -21,8 +17,6 @@ const ShippingOptions = ({ product, setSelectedOption }) => {
       setShippingCost(25000);
     }
 
-    setTotalPrice(totalPrice + shippingCost)
-    //onShippingChange(option, shippingCost); // Pass shipping data back to the parent
   };
 
   return (

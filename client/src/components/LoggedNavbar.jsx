@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom'
 //De font-awesome:
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faShoppingCart} from "@fortawesome/free-solid-svg-icons"
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faStore } from "@fortawesome/free-solid-svg-icons"; // Logo icon for the ecommerce
 
 //Context:
 import { useStore } from '../context/storecontext'
@@ -55,18 +58,22 @@ export const LoggedNavbar = () => {
   return (
     <nav className='logged-h-cont'>
         <Link to="/" className='logo-cont'>
-            <FontAwesomeIcon icon={faShoppingCart} size='2x' className='icon' />
+            <FontAwesomeIcon icon={faStore} size='4x' className='icon' />
         </Link>
 
         <div className="h-links">
-            <Link to="/account" className='account-link'>T</Link>
+            <Link to="/account" className='account-link'>
+              <FontAwesomeIcon icon={faUser} size='1.5x' className='icon' />
+            </Link>
             <SearchBarWrapper />
             <Link to="/ofertas" className='link'>ofertas</Link>
             <Link to="/nuevo" className='white-link'>nuevo</Link>
             {/*<button className="logout-btn" onClick={logoutUser}>
               Cerrar Sesion
             </button>*/}
-            <Link className='cart-link' to="/cart">carrito</Link> 
+            <Link className='cart-link' to="/cart">
+              carrito <FontAwesomeIcon icon={faShoppingCart} size='1x' className='icon' />
+            </Link> 
         </div>
     </nav>
   )

@@ -4,6 +4,8 @@ from PIL import Image
 from django.core.files import File
 from django.utils import timezone
 from django.db.models import Count
+from django.core.validators import MaxValueValidator
+from django.core.exceptions import ValidationError
 
 from django.db import models
 
@@ -33,11 +35,12 @@ class Product(models.Model):
 
     name = models.CharField(max_length=100)
     inventory = models.PositiveIntegerField(default=0)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.PositiveIntegerField(validators=[MaxValueValidator(10000000)])
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='Unisex')
     description = models.TextField(blank=True, null=True)
     isDiscounted = models.BooleanField(default=False)
+    discountPrice = models.PositiveIntegerField(validators=[MaxValueValidator(10000000)], null=True)
     size = models.JSONField(
         models.FloatField(),
         blank=True, 
@@ -53,6 +56,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+    #Asegurarse que el precio de descuento sea menor al precio original:
+    def clean(self):
+        super().clean()  # Call the base class clean
+        if self.discountPrice > self.price:
+            raise ValidationError({
+                'discountPrice': f'Discount price must be less than or equal to price ({self.price}).'
+            })
 
     #self.category es lo mismo que una cllase del modelo Category, por lo que tiene un atributo slug    
     def get_absolute_url(self):
@@ -131,7 +142,7 @@ class Order(models.Model):
     order_number = models.PositiveIntegerField(unique=True)
     product_name = models.CharField(max_length=255)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    shipping_option = models.PositiveSmallIntegerField(default=1)
+    shipping_option = models.CharField(2, max_length=10)
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
