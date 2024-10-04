@@ -1,13 +1,15 @@
 .home-cont {
-    max-width: 100%;
+    max-width: 100vh;
     height: fit-content;
     background: var(--black);
     
 }
 
     .home-cont div.empty-search {
+        position: relative;
+        left: 300px;
         width: 100%;
-        min-height: 50vh;
+        min-height: 60vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -17,3 +19,13 @@
             width: 100%;
             text-align: center;
         }
+
+    .home-cont div .items-container {
+        position: relative;
+        left: 0;
+        transition: all .2 linear;
+    }
+
+    .home-cont div .items-container.active {
+        left: 300px;
+    }

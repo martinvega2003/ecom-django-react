@@ -10,8 +10,12 @@ function OrderForm({ product, selectedOption, shippingCost }) {
   const [finalPrice, setFinalPrice] = useState(0)
 
   useEffect(() => {
-    setFinalPrice((product.price * quantity) + shippingCost)
-  }, [quantity, product.price, shippingCost])
+    if (product.isDiscounted) {
+      setFinalPrice((product.discountPrice * quantity) + shippingCost)
+    } else {
+      setFinalPrice((product.price * quantity) + shippingCost)
+    }
+  }, [quantity, product.price, product.discountPrice, shippingCost])
 
   const handleBuyClick = (e) => {
     e.preventDefault();

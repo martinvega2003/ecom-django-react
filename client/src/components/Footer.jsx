@@ -7,14 +7,14 @@ const Footer = () => {
         <footer className="footer-container">
             <div className="footer-content">
                 <div className="footer-section">
-                    <h4>Contact Us</h4>
-                    <p>1234 E-commerce St, Suite 100</p>
-                    <p>Shop City, SC 98765</p>
-                    <p>Email: contact@ecommerce.com</p>
+                    <h4>Contactanos</h4>
+                    <p>E-commerce Nro 1234, Piso 3</p>
+                    <p>Barrio Mburukuja, Asuncion</p>
+                    <p>Email: contacto@ecommerce.com</p>
                 </div>
 
                 <div className="footer-section">
-                    <h4>Follow Us</h4>
+                    <h4>Siguenos en:</h4>
                     <div className="social-links">
                         <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
                             <FaInstagram />
@@ -29,21 +29,21 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-section">
-                    <h4>Help</h4>
-                    <a href="/help-center" className="help-link">Help Center</a>
+                    <h4>Ayuda</h4>
+                    <a href="/help-center" className="help-link">Centro de ayuda</a>
                 </div>
 
                 <div className="footer-section">
-                    <h4>Stay Updated</h4>
+                    <h4>Mantente al tanto</h4>
                     <form className="email-signup-form">
                         <input type="email" placeholder="Enter your email" required />
-                        <button type="submit" className="signup-button">Sign Up</button>
+                        <button type="submit" className="signup-button">Registrate</button>
                     </form>
                 </div>
             </div>
 
             <div className="footer-bottom">
-                <p>© 2024 Your E-commerce. All rights reserved.</p>
+                <p>© 2024 mi E-commerce. Todos los derechos reservados.</p>
             </div>
         </footer>
     );

@@ -1,18 +1,24 @@
 import "../pages-styles/Cart.css"
-import React, { useEffect } from 'react';
+import React, {useState, useEffect } from 'react';
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useStore } from "../context/storecontext";
 
 const Cart = () => {
+    const [refresh, setRefresh] = useState(false);
 
-    const {cartItems, setCartItems} = useStore()
+    const {cartItems, setCartItems, fetchCartItems} = useStore()
+
+    useEffect(() => {
+        fetchCartItems()
+    }, [refresh])
 
     const deleteItem = async (id) => {
         try {
             await axios.delete('http://127.0.0.1:8000/api/v1/store/cart/delete/' + id + "/");
             const updatedCart = cartItems.filter(item => item.id !== id);
             setCartItems(updatedCart);
+            setRefresh(prev => !prev)
         } catch (error) {
             console.error("Error adding to cart:", error);
             alert("No se pudo eliminar el elemento del carrito.");
@@ -21,9 +27,9 @@ const Cart = () => {
 
     return (
         <div className="section my-cart">
-            <h1>My Cart</h1>
+            <h1>Mi Carrito</h1>
             {cartItems.length === 0 ? (
-                <p>Your cart is empty.</p>
+                <p>Tu Carrito Esta  Vacio.</p>
             ) : (
                 <div className="cart-items">
                     {cartItems.map(item => (
@@ -43,7 +49,7 @@ const Cart = () => {
             )}
             <div className="total">
                 <h2>
-                    Total: ${cartItems.reduce((total, item) => total + Number(item.product.price), 0).toFixed(2)}
+                    Total: Gs. {cartItems.reduce((total, item) => total + Number(item.product.price), 0)}
                 </h2>
             </div>
         </div>

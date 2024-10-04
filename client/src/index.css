@@ -14,7 +14,7 @@
 
 .section {
     height: fit-content;
-    width: 100%;
+    /*max-width: 100vh; */
     background: white;
     padding: 150px 50px;
 }

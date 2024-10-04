@@ -142,7 +142,7 @@ class Order(models.Model):
     order_number = models.PositiveIntegerField(unique=True)
     product_name = models.CharField(max_length=255)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    shipping_option = models.CharField(2, max_length=10)
+    shipping_option = models.CharField(max_length=10)
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category, Cart, PaymentMethod
+from .models import Product, Category, Cart, PaymentMethod, Order
 from django import forms
 
 # Step 3: Create a custom form for Product in the admin panel
@@ -28,3 +28,4 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Cart)
 admin.site.register(Category)
 admin.site.register(PaymentMethod)
+admin.site.register(Order)

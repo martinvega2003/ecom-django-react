@@ -2,20 +2,11 @@ import React, { useState } from 'react'
 import "../components-styles/FilterMenu.css"
 import { useStore } from '../context/storecontext'
 
-export const FilterMenu = () => {
+export const FilterMenu = ({isActive, setIsActive, handleFilter, setGender, setMinPrice, setMaxPrice, setCategory, setInDiscount, inDiscount}) => {
 
-    const [isActive, setIsActive] = useState(false)
-    const [gender, setGender] = useState('');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-    const [inDiscount, setInDiscount] = useState(false);
+    //const [isActive, setIsActive] = useState(true)
 
     const {categories} = useStore()
-
-    const handleFilter = () => {
-        // Logic for filtering products based on selected criteria
-        console.log({ gender, minPrice, maxPrice, inDiscount });
-    };
 
   return (
     <div className={isActive ? "filter-menu active" : "filter-menu"}>
@@ -33,9 +24,9 @@ export const FilterMenu = () => {
                             Gender:
                             <select onChange={(e) => setGender(e.target.value)}>
                                 
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="unisex">Unisex</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Unisex">Unisex</option>
                             </select>
                         </label>
                     </div>
@@ -45,13 +36,13 @@ export const FilterMenu = () => {
                             <input
                                 type="number"
                                 placeholder="Min"
-                                onChange={(e) => setMinPrice(e.target.value)}
+                                onChange={(e) => setMinPrice(Number(e.target.value))}
                                 className="price-input"
                             />
                             <input
                                 type="number"
                                     placeholder="Max"
-                                onChange={(e) => setMaxPrice(e.target.value)}
+                                onChange={(e) => setMaxPrice(Number(e.target.value))}
                                 className="price-input"
                             />
                         </label>
@@ -59,9 +50,9 @@ export const FilterMenu = () => {
                     <div>
                         <label>
                             Category:
-                            <select>
+                            <select onChange={e => setCategory(e.target.value)}>
                                 {categories.map((category) => (
-                                    <option key={category.id}>
+                                    <option key={category.id} value={category.name}>
                                         {category.name}
                                     </option>
                                 ))}
@@ -78,7 +69,7 @@ export const FilterMenu = () => {
                             In Discount
                         </label>
                     </div>
-                    <button onClick={handleFilter}>Filter</button>
+                <button onClick={handleFilter}>Filter</button>
             </div>
         </div>
     </div>

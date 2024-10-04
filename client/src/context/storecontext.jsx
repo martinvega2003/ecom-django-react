@@ -71,7 +71,7 @@ export const StoreProvider = ({children}) => { //El context sera un componente q
     };
 
     return ( //Usamos la variable context y le agregamos el .Provider para que se vuelva el contexto. En value se pasan las funciones y valores que se compartiran.
-        <context.Provider value={{selectedCategory, setSelectedCategory, cartItems, setCartItems, categories, setCategories, products, setProducts, searchedProducts, setSearchedProducts, paymentMethods, setPaymentMethods}}>
+        <context.Provider value={{selectedCategory, setSelectedCategory, cartItems, setCartItems, fetchCartItems, categories, setCategories, products, setProducts, searchedProducts, setSearchedProducts, paymentMethods, setPaymentMethods}}>
             {children}
         </context.Provider>
     )

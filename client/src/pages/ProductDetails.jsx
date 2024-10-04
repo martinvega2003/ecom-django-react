@@ -22,6 +22,7 @@ export function ProductDetails() {
   useEffect(() => {
     if (product) {
       fetchRelatedProducts();
+      setShippingCost(product.freeShipping ? 0 : 10000)
     }
   }, [product]); // Fetch related products only after product is set
 
@@ -74,9 +75,23 @@ export function ProductDetails() {
               <h2>
                   {product.name}
               </h2>
-              <span className="price">
-                  {product.price} Gs.
-              </span>
+              {
+                product.isDiscounted ? 
+                (
+                  <div className="prices-cont">
+                    <span className="original-price">
+                      {product.price} Gs.
+                    </span>
+                    <span className="discounted-price">
+                      {product.discountPrice} Gs. <span>{Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF</span>
+                  </span>
+                  </div>
+                ) : (
+                  <span className="price">
+                    {product.price} Gs.
+                  </span>
+                )
+              }
               <OrderForm product={product} shippingCost={shippingCost} selectedOption={selectedOption} /> 
               <button className="add-cart-btn" onClick={addToCart}>
                   Agregar al carrito

@@ -21,7 +21,7 @@ const ShippingOptions = ({ product, setSelectedOption, shippingCost, setShipping
 
   return (
     <div className="shipping-options">
-      <h3>Select Shipping Option</h3>
+      <h3>Selecciona tu opcion de envio</h3>
       <form>
         <div className="option">
           <input
@@ -32,7 +32,7 @@ const ShippingOptions = ({ product, setSelectedOption, shippingCost, setShipping
             onChange={() => handleShippingChange('10-days')}
           />
           <label htmlFor="10-days">
-            10 days delivery - {product.free_shipping ? 'Free' : '10.000 Gs'}
+            10 dias de delivery- {product.free_shipping ? 'Free' : '10.000 Gs'}
           </label>
         </div>
 
@@ -44,7 +44,7 @@ const ShippingOptions = ({ product, setSelectedOption, shippingCost, setShipping
             value="1-week"
             onChange={() => handleShippingChange('1-week')}
           />
-          <label htmlFor="1-week">1 week delivery - 20.000 Gs</label>
+          <label htmlFor="1-week">1 semana de delivery - 20.000 Gs</label>
         </div>
 
         <div className="option">
@@ -55,11 +55,11 @@ const ShippingOptions = ({ product, setSelectedOption, shippingCost, setShipping
             value="2-3-days"
             onChange={() => handleShippingChange('2-3-days')}
           />
-          <label htmlFor="2-3-days">2-3 days delivery - 25.000 Gs</label>
+          <label htmlFor="2-3-days">2-3 dias de delivery - 25.000 Gs</label>
         </div>
       </form>
 
-      <p>Shipping Cost: {shippingCost === 0 ? 'Free' : `${shippingCost} Gs`}</p>
+      <p>Costo de envio: {shippingCost === 0 ? 'Free' : `${shippingCost} Gs`}</p>
     </div>
   );
 };

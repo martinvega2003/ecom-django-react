@@ -1,5 +1,6 @@
 .filter-menu {
-    left: -250px;
+    z-index: 20px;
+    left: -300px;
     top: 120px;
     position: fixed;
     width: 300px;
@@ -16,35 +17,115 @@
     left: 0;
 }
 
-    .filter-menu .toggle-btn {
-        background: none;
-        font-size: 35px;
-        font-weight: bold;
-        color: var(--green);
-        padding: 10px;
-        border: none;
-        transition: all .2s linear;
+/* Toggle Button */
+.toggle-btn {
+    position: absolute;
+    top: 10px;
+    right: -40px;
+    background-color: #1e1e1e;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #ffffff;
+    transition: transform 0.3s;
+    border-radius: 0 5px 5px 0;
+  }
+  
+  .toggle-btn.active {
+    transform: rotate(0deg);
+  }
+  
+  .toggle-btn p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  /* Filter Options */
+  .filter-items h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .filter-items label {
+    display: block;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .filter-items select,
+  .filter-items input[type="number"] {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+  }
+  
+  .filter-items select:focus,
+  .filter-items input:focus {
+    border-color: #1e1e1e;
+    outline: none;
+  }
+  
+  .price-input {
+    display: inline-block;
+    width: 48%;
+  }
+  
+  .price-input:first-of-type {
+    margin-right: 4%;
+  }
+  
+  .filter-items input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  /* Filter Button */
+  .filter-items button {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    background-color: #1e1e1e;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .filter-items button:hover {
+    background-color: #333;
+  }
+  
+  /* Additional Styling */
+  .filter-menu .filter-items {
+    padding: 20px;
+  }
+  
+  .filter-items select,
+  .filter-items input {
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 768px) {
+    .filter-menu.active {
+      width: 100%;
     }
-
-    .filter-menu .toggle-btn.active {}
-
-    .filter-menu .filter-items {
-        height: fit-content;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
+  
+    .toggle-btn {
+      right: 0;
+      top: 20px;
+      font-size: 16px;
+      padding: 8px;
     }
-
-        .filter-menu .filter-items h3 {
-            text-align: center;
-            margin: 10px;
-            margin-bottom: 20px;
-        }
-
-        .filter-menu .filter-items label {
-            margin: 10px;
-            margin-top: 20px;
-        }
-
-        .filter-menu .filter-items option {}
+  }

@@ -53,6 +53,34 @@
             margin: 10px 0;
         }
 
+        .product-details .right .prices-cont {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+            .product-details .right .prices-cont span {
+                text-align: left;
+                font-weight: bold;
+                font-size: 30px;
+                color: var(--black);
+                margin: 10px 0;
+            }
+
+            .product-details .right .prices-cont span.original-price {
+                text-align: left;
+                font-weight: bold;
+                font-size: 23px;
+                color: var(--black);
+                margin: 10px 0;
+                margin-right: 10px;
+                text-decoration: line-through;
+            }
+
+            .product-details .right .prices-cont span span {
+                color: var(--green);
+            }
+
         .product-details .right .add-cart-btn {
             width: 200px;
             height: fit-content;
