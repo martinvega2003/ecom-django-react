@@ -52,15 +52,15 @@ const PaymentPopup = ({ finalPrice, setFinalPrice, product, quantity, selectedOp
     return (
         <div className="payment-popup-overlay">
             <div className="payment-popup">
-                <h2>Confirm Payment</h2>
-                <p>Product: {product.name}</p>
-                <p>Quantity: {quantity}</p>
+                <h2>Confirmar Pago</h2>
+                <p>Producto: {product.name}</p>
+                <p>Cantidad: {quantity}</p>
                 <p>Total: Gs {finalPrice}</p>
 
                 <div className="payment-methods">
-                    <label>Select Payment Method:</label>
+                    <label>Seleccionar Metodo de Pago:</label>
                     <select value={selectedMethod} onChange={(e) => setSelectedMethod(e.target.value)} required>
-                        <option value="">-- Select --</option>
+                        <option value="">-- Seleccionar --</option>
                         {paymentMethods.map(method => (
                             <option key={method.id} value={method.id}>{method.method_type}</option>
                         ))}
@@ -69,9 +69,9 @@ const PaymentPopup = ({ finalPrice, setFinalPrice, product, quantity, selectedOp
 
                 <div className="payment-buttons">
                     <button onClick={handlePayment} disabled={loading || !selectedMethod}>
-                        {loading ? 'Processing...' : 'Confirm Payment'}
+                        {loading ? 'Procesando...' : 'Confirmar'}
                     </button>
-                    <button onClick={onClose}>Cancel</button>
+                    <button onClick={onClose}>Cancelar</button>
                 </div>
             </div>
         </div>

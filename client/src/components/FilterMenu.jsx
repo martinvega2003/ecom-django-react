@@ -18,21 +18,21 @@ export const FilterMenu = ({isActive, setIsActive, handleFilter, setGender, setM
 
         <div className="filter-items">
             <div>
-                <h3>Filter Options</h3>
+                <h3>Filtros</h3>
                     <div>
                         <label>
-                            Gender:
+                            Genero:
                             <select onChange={(e) => setGender(e.target.value)}>
-                                
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
+                                <option value="">Todos</option>
+                                <option value="Male">Hombre</option>
+                                <option value="Female">Mujer</option>
                                 <option value="Unisex">Unisex</option>
                             </select>
                         </label>
                     </div>
                     <div>
                         <label>
-                            Price Range:
+                            Precio:
                             <input
                                 type="number"
                                 placeholder="Min"
@@ -49,8 +49,9 @@ export const FilterMenu = ({isActive, setIsActive, handleFilter, setGender, setM
                     </div>
                     <div>
                         <label>
-                            Category:
+                            Categoria:
                             <select onChange={e => setCategory(e.target.value)}>
+                                <option value="">Todas</option>
                                 {categories.map((category) => (
                                     <option key={category.id} value={category.name}>
                                         {category.name}
@@ -66,10 +67,10 @@ export const FilterMenu = ({isActive, setIsActive, handleFilter, setGender, setM
                                 checked={inDiscount}
                                 onChange={() => setInDiscount(!inDiscount)}
                             />
-                            In Discount
+                            Con Descuento
                         </label>
                     </div>
-                <button onClick={handleFilter}>Filter</button>
+                <button onClick={handleFilter}>Filtrar</button>
             </div>
         </div>
     </div>
