@@ -19,9 +19,9 @@ const PaymentMethods = () => {
 
     return (
         <div className="section payment-methods">
-            <h1>Payment Methods</h1>
+            <h1>Tus metodos de pago</h1>
             {paymentMethods.length === 0 ? (
-                <p>You have no saved payment methods.</p>
+                <p>No guardaste ningun metodo de pago</p>
             ) : (
                 <div className="method-list">
                     {paymentMethods.map(method => { return method.method_type === "credit_card" ? 
@@ -32,10 +32,10 @@ const PaymentMethods = () => {
                                 <div className="info">
                                     <p>{method.details.cardHolder}</p>
                                     <p>{method.details.cardNumber}</p>
-                                    <p>Expires: {method.details.expiry}</p>
+                                    <p>Vence: {method.details.expiry}</p>
                                 </div>
                             </div>
-                            <button className="remove-btn" onClick={() => handleRemove(method.id)}>Remove</button>
+                            <button className="remove-btn" onClick={() => handleRemove(method.id)}>Eliminar</button>
                         </div>
                     ) : method.method_type === "paypal" ? (
                         <div className="payment-method">
@@ -43,7 +43,7 @@ const PaymentMethods = () => {
                                 <h4>{method.method_type}</h4>
                                 <p>{method.details.email}</p>
                             </div>
-                            <button className="remove-btn" onClick={() => handleRemove(method.id)}>Remove</button>
+                            <button className="remove-btn" onClick={() => handleRemove(method.id)}>Eliminar</button>
                         </div>
                     ) :(
                         <div className="payment-method">
@@ -54,13 +54,13 @@ const PaymentMethods = () => {
                                     <p>{method.details.accountNumber}</p>
                                 </div>
                             </div>
-                            <button className="remove-btn" onClick={() => handleRemove(method.id)}>Remove</button>
+                            <button className="remove-btn" onClick={() => handleRemove(method.id)}>Eliminar</button>
                         </div>
                     )
                 })}
                 </div>
             )}
-            <Link className="add-method-btn" to="/payment/methods/add">Add New Payment Method</Link>
+            <Link className="add-method-btn" to="/payment/methods/add">Agregar nuevo metodo</Link>
         </div>
     );
 };

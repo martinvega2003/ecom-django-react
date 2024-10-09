@@ -1,4 +1,3 @@
-// src/pages/AddPaymentMethod.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import "../components-styles/CardMethodForm.css";
@@ -9,9 +8,47 @@ const AddCardPaymentMethod = () => {
     const [expiry, setExpiry] = useState('');
     const [cvv, setCvv] = useState('');
 
+    const validateCardNumber = (number) => {
+        // Simple Luhn algorithm check for credit card validation
+        const regex = /^\d{16}$/; // 16 digit card number
+        return regex.test(number);
+    };
+
+    const validateExpiry = (expiry) => {
+        // Validates MM/YY format and checks if the date is in the future
+        const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
+        if (!regex.test(expiry)) return false;
+        const [month, year] = expiry.split('/');
+        const expiryDate = new Date(`20${year}`, month - 1);
+        const today = new Date();
+        return expiryDate > today;
+    };
+
+    const validateCVV = (cvv) => {
+        // Validates a 3- or 4-digit CVV code
+        const regex = /^\d{3,4}$/;
+        return regex.test(cvv);
+    };
+
     const addPaymentMethod = async (e) => {
         e.preventDefault();
-        // Include the method type in the data being sent to the backend
+
+        // Validation checks
+        if (!validateCardNumber(cardNumber)) {
+            alert("Invalid card number. Please enter a 16-digit card number.");
+            return;
+        }
+
+        if (!validateExpiry(expiry)) {
+            alert("Invalid expiry date. Use MM/YY format and ensure the date is in the future.");
+            return;
+        }
+
+        if (!validateCVV(cvv)) {
+            alert("Invalid CVV. Please enter a 3- or 4-digit CVV.");
+            return;
+        }
+
         const payload = {
             method_type: "credit_card",
             details: {
@@ -19,9 +56,9 @@ const AddCardPaymentMethod = () => {
                 cardNumber,
                 cvv,
                 expiry
-            },  // This can be an object with specific fields (e.g., email for PayPal, card details for credit card)
+            },
         };
-    
+
         try {
             const res = await axios.post('http://127.0.0.1:8000/api/v1/store/payment-methods/payment-methods/', payload);
             console.log('Payment method added:', res.data);
@@ -37,10 +74,9 @@ const AddCardPaymentMethod = () => {
 
     return (
         <div className="add-payment-method">
-            <h1>Add New Payment Method</h1>
             <form onSubmit={addPaymentMethod}>
                 <div className="form-group">
-                    <label htmlFor="cardHolder">Card Holder Name</label>
+                    <label htmlFor="cardHolder">Propietario</label>
                     <input
                         type="text"
                         id="cardHolder"
@@ -50,7 +86,7 @@ const AddCardPaymentMethod = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="cardNumber">Card Number</label>
+                    <label htmlFor="cardNumber">Numero de la tarjeta</label>
                     <input
                         type="text"
                         id="cardNumber"
@@ -60,7 +96,7 @@ const AddCardPaymentMethod = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="expiry">Expiry Date (MM/YY)</label>
+                    <label htmlFor="expiry">Vencimiento (MM/YY)</label>
                     <input
                         type="text"
                         id="expiry"
@@ -79,7 +115,7 @@ const AddCardPaymentMethod = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="submit-btn">Add Payment Method</button>
+                <button type="submit" className="submit-btn">Agregar metodo</button>
             </form>
         </div>
     );

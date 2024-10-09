@@ -6,17 +6,34 @@ export const AddBankTransferMethod = () => {
     const [accountName, setAccountName] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
 
+    // Simple validation for account number (you can customize it based on real use case)
+    const validateAccountNumber = (number) => {
+        const regex = /^\d{8,20}$/;  // Typical account numbers are 8-20 digits
+        return regex.test(number);
+    };
+
     const addPaymentMethod = async (e) => {
         e.preventDefault();
-        // Include the method type in the data being sent to the backend
+
+        // Validation checks
+        if (!accountName) {
+            alert("Account holder's name cannot be empty.");
+            return;
+        }
+
+        if (!validateAccountNumber(accountNumber)) {
+            alert("Invalid account number. Please enter a valid account number (8-20 digits).");
+            return;
+        }
+
         const payload = {
             method_type: "bank_transfer",
             details: {
                 accountName,
                 accountNumber
-            },  // This can be an object with specific fields (e.g., email for PayPal, card details for credit card)
+            },
         };
-    
+
         try {
             const res = await axios.post('http://127.0.0.1:8000/api/v1/store/payment-methods/payment-methods/', payload);
             console.log('Payment method added:', res.data);
@@ -30,10 +47,9 @@ export const AddBankTransferMethod = () => {
 
     return (
         <div className="add-payment-method">
-            <h1>Add Bank Transfer Payment Method</h1>
             <form onSubmit={addPaymentMethod}>
                 <div className="form-group">
-                    <label htmlFor="accountName">Account Holder Name</label>
+                    <label htmlFor="accountName">Propietario</label>
                     <input
                         type="text"
                         id="accountName"
@@ -43,7 +59,7 @@ export const AddBankTransferMethod = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="accountNumber">Account Number</label>
+                    <label htmlFor="accountNumber">Numero de cuenta</label>
                     <input
                         type="text"
                         id="accountNumber"
@@ -52,7 +68,7 @@ export const AddBankTransferMethod = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="submit-btn">Add Bank Transfer Method</button>
+                <button type="submit" className="submit-btn">Agregar metodo</button>
             </form>
         </div>
     );

@@ -30,40 +30,40 @@ const MyAccount = () => {
 
     return (
         <div className="section my-account">
-            <h1>My Account</h1>
+            <h1>Mi cuenta</h1>
             <div className="user-info">
-                <h2>Username: {user.username}</h2>
+                <h2>Usuario: {user.username}</h2>
                 <p>Email: {user.email}</p>
             </div>
             <div className="orders">
-                <h3>Your Orders</h3>
+                <h3>Tus compras</h3>
                 {orders.length === 0 ? (
-                    <p>You have no orders yet.</p>
+                    <p>Aun no tienes compras en el historial</p>
                 ) : (
                     <ul>
                         {orders.map(order => (
                             <li key={Number(order.order_number)}>
-                                Order #{order.order_number}: {order.product_name} - Gs. {order.total_amount} - Fecha: {order.date}
+                                Orden #{order.order_number}: {order.product_name} - Gs. {order.total_amount} - Fecha: {order.date}
                             </li>
                         ))}
                     </ul>
                 )}
             </div>
             <div className="cart-items">
-                <h3>Items in Cart</h3>
+                <h3>Productos en el carrito</h3>
                 {cartItems.length === 0 ? (
-                    <p>Your cart is empty.</p>
+                    <p>Tu carrito esta vacio</p>
                 ) : (
                     <ul>
                         {cartItems.map(item => (
                             <li key={item.id}>
-                                {item.product.name} - ${Number(item.product.price).toFixed(2)}
+                                {item.product.name} - Gs. {Number(item.product.price)}
                             </li>
                         ))}
                     </ul>
                 )}
             </div>
-            <Link to="/payment/methods" className="change-payment-btn">Change Payment Methods</Link>
+            <Link to="/payment/methods" className="change-payment-btn">Metodos de pago</Link>
         </div>
     );
 };

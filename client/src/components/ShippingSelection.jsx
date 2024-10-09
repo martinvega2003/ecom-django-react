@@ -7,7 +7,7 @@ const ShippingOptions = ({ product, setSelectedOption, shippingCost, setShipping
   const handleShippingChange = (option) => {
     setSelectedOption(option);
     
-    if (option === '10-days' && product.free_shipping) {
+    if (option === '10-days' && product.freeShipping) {
       setShippingCost(0);
     } else if (option === '10-days') {
       setShippingCost(10000);

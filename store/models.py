@@ -60,10 +60,11 @@ class Product(models.Model):
     #Asegurarse que el precio de descuento sea menor al precio original:
     def clean(self):
         super().clean()  # Call the base class clean
-        if self.discountPrice > self.price:
-            raise ValidationError({
-                'discountPrice': f'Discount price must be less than or equal to price ({self.price}).'
-            })
+        if self.isDiscounted:
+            if self.discountPrice > self.price:
+                raise ValidationError({
+                    'discountPrice': f'Discount price must be less than or equal to price ({self.price}).'
+                })
 
     #self.category es lo mismo que una cllase del modelo Category, por lo que tiene un atributo slug    
     def get_absolute_url(self):
@@ -135,6 +136,33 @@ class PaymentMethod(models.Model):
     method_type = models.CharField(max_length=20, choices=METHOD_CHOICES)
     details = models.JSONField()  # Store method-specific details as JSON
 
+    def validate_credit_card(self, card_number):
+        # Luhn Algorithm for Credit Card Validation
+        def digits_of(n):
+            return [int(d) for d in str(n)]
+        digits = digits_of(card_number)
+        odd_digits = digits[-1::-2]
+        even_digits = digits[-2::-2]
+        checksum = sum(odd_digits)
+        for d in even_digits:
+            checksum += sum(digits_of(d * 2))
+        return checksum % 10 == 0
+
+    def clean(self):
+        if self.method_type == 'credit_card':
+            if not self.validate_credit_card(self.details.get('card_number')):
+                raise ValidationError('Invalid Credit Card number')
+        
+        if self.method_type == 'paypal':
+            email_regex = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+            if not re.match(email_regex, self.details.get('paypal_email', '')):
+                raise ValidationError('Invalid PayPal email')
+
+        if self.method_type == 'bank_transfer':
+            iban = self.details.get('iban', '')
+            if len(iban) < 15:  # Adjust IBAN length rules as necessary
+                raise ValidationError('Invalid IBAN')
+
     def __str__(self):
         return f"{self.method_type} - {self.details}"
 
@@ -144,6 +172,7 @@ class Order(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     shipping_option = models.CharField(max_length=10)
     date = models.DateTimeField(default=timezone.now)
+    bank_transfer_status = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Order {self.order_number} - {self.product_name} - {self.total_amount}"

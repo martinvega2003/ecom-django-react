@@ -12,13 +12,13 @@ export const AddPaymentMethod = () => {
     <div className='section payment-method-form-cont'>
       <div className="btns-cont">
         <button className={selectedMethod === 0 ? "active" : ""} onClick={() => setSelectedMethod(0)}>
-          Credit Card
+          Tarjeta
         </button>
         <button className={selectedMethod === 1 ? "active" : ""} onClick={() => setSelectedMethod(1)}>
-          Paypal
+          PayPal
         </button>
         <button className={selectedMethod === 2 ? "active" : ""} onClick={() => setSelectedMethod(2)}>
-          Bank Transfer
+          Transferencia
         </button>
       </div>
       <div className="form-cont">
