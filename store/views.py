@@ -52,25 +52,23 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class ProductsByCategoryView(APIView):
     """
-    API View to retrieve products added in the last 2 days for a specific category.
-    If there are more than 4 products, return the most recent 4.
+    Retorna todos los productos de una categoria
     """
 
     def get(self, request, category_id):
         """
-        GET method to handle the request and return products from the last 2 days.
-        :param category_id: The ID of the category to filter by.
+        Metodo GET con param = id de la categoria
         """
-        # Get the category or return a 404 error if not found
+        # Obtener categoria o retornar 404
         category = get_object_or_404(Category, id=category_id)
         
-        # Filter products by the category and check if they were added in the last 2 days. Se obtienen estos productos en un array
+        # Filtrar productos por categoria. Se obtienen estos productos en un array
         products = Product.objects.filter(category=category).order_by('-addedDate')
         
-        # Serialize the filtered products
+        # Serializamos productos
         serializer = ProductSerializer(products, many=True)
         
-        # Return the serialized data along with HTTP status 200 (OK)
+        # Retornamos el array serializado y un status 200.
         if serializer.data:
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"message": "No products in this category"})
@@ -79,38 +77,35 @@ class ProductsByCategoryView(APIView):
 
 class RecentProductsByCategoryView(APIView):
     """
-    API View to retrieve products added in the last 2 days for a specific category.
-    If there are more than 4 products, return the most recent 4.
+    Retorna los ultimos 4 productos agregados. Solo 4 si hay mas de  4.
     """
 
     def get(self, request, category_id):
         """
-        GET method to handle the request and return products from the last 2 days.
-        :param category_id: The ID of the category to filter by.
+        Metodo GET con param = id de la categoria
         """
-        # Get the category or return a 404 error if not found
+        # Obtenmos la categoria o error 404
         category = get_object_or_404(Category, id=category_id)
 
-        # Get the current time and calculate the time for 2 days ago
+        # Obtenemos el tiempo actual y lo calculamos restando dos dias.
         two_days_ago = timezone.now() - timedelta(days=2)
         
-        # Filter products by the category and check if they were added in the last 2 days. Se obtienen estos productos en un array
+        # Filtro de products, se controla que se hallan agregado en los ultimos 2 dias. Se obtienen estos productos en un array
         products = Product.objects.filter(category=category, addedDate__gte=two_days_ago).order_by('-addedDate')
         
-        # Limit to the last 4 products if more than 4 are found. El array es igual al mismo array pero hasta el 4to productos
+        #  El array es igual al mismo array pero hasta el 4to producto
         if len(products) > 4:
             products = products[:4]
         
-        # Serialize the filtered products
+        # Serializa el array
         serializer = ProductSerializer(products, many=True)
         
-        # Return the serialized data along with HTTP status 200 (OK)
+        # Retorna el array serializado
         if serializer.data:
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"message": "No products in this category"})
     
 class ProductDetail(APIView):
-    #permission_classes = [IsAuthenticated]
 
     def get_object(self, category_slug, product_slug):
         try:
@@ -150,40 +145,32 @@ def search(request):
         return Response({"products": []}) #Si no existe la query, retornamos un objeto que tiene una llave products que es un array vacio
     
 class CartListView(generics.ListAPIView):
-    #permission_classes = [IsAuthenticated]
 
-    # permission_classes = [permissions.IsAuthenticated]  # Uncomment when using authentication
     serializer_class = CartSerializer
 
     def get_queryset(self):
-        #return Cart.objects.filter(user=self.request.user)  # Uncomment when using authentication
-        return Cart.objects.all()  # For testing without user authentication
+        return Cart.objects.all()  # Testeo sin uthentication
 
 @api_view(['POST'])
 def add_to_cart(request):
-    product_id = request.data['product_id']  # Make sure you're getting product id #de request.data se obtiene el objeto que el cliente paso al servidor, y de ahi usamos get para obtener el id del producto
+    product_id = request.data['product_id']  #de request.data se obtiene el objeto que el cliente paso al servidor, y de ahi usamos get para obtener el id del producto
 
     try:
-        product = Product.objects.get(id=product_id)  # Get the actual product instance
+        product = Product.objects.get(id=product_id)  # Obtenemos la instancia del producto encontrado
     except Product.DoesNotExist:
         return Response({'error': 'Product not found.'}, status=404)
-    #if request.user.is_authenticated:  # Uncomment when using authentication
-    cart_item, created = Cart.objects.get_or_create(product=product) #get si ya existe, create si no y se guarda en la variable created  # Remove user reference for testing
+    cart_item, created = Cart.objects.get_or_create(product=product) #get si ya existe, create si no y se guarda en la variable created 
     if created: #Si existe created, se guarda en el carrito, si no no.
         return Response({'message': 'Product added to cart.'}, status=201)
     else:
         return Response({'message': 'Product already in cart.'}, status=400)
-        # else:  # Uncomment when using authentication
-        #     return Response({'message': 'Authentication required.'}, status=403)  # Uncomment when using authentication
 
 @api_view(['DELETE'])
 def delete_from_cart(request, product_id):
     try:
         product = Product.objects.get(id=product_id)
-        # Fetch the product in the cart by the provided product ID.
         cart_item = Cart.objects.get(product=product)
 
-        # Delete the item from the cart.
         cart_item.delete()
 
         return Response({'message': 'Product removed from cart.'}, status=200)
@@ -193,19 +180,18 @@ def delete_from_cart(request, product_id):
 #VISTAS PARA EL PROCESO DE PAGO:
 
 class PaymentMethodViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticated]
 
     queryset = PaymentMethod.objects.all()
     serializer_class = PaymentMethodSerializer
 
     def create(self, request, *args, **kwargs):
-        #user = request.user  # Uncomment when user auth is implemented
         serializer = self.get_serializer(data=request.data) #get_serializer para usar el metodo get y obtener de request.data lo que ell cliente envio al servidor
         serializer.is_valid(raise_exception=True)
-        #serializer.save(user=user)  # Uncomment when user auth is implemented
         serializer.save()
         return Response(serializer.data, status=201)
-    
+
+# La funcion comentada es una funcion para procesar los pagos realmente, aun falta completarla. Abajo hay una funcion que solo simula un pago,
+"""   
 @api_view(['POST'])
 def process_payment(request):
     product_id = request.data.get('product_id')
@@ -218,17 +204,14 @@ def process_payment(request):
     pyg_price = int(product.price) * quantity
 
     try:
-        # Fetch exchange rate for PYG to USD
         response = requests.get('https://v6.exchangerate-api.com/v6/7bf9fe8c252ed9adee0ae732/latest/PYG')
         exchange_rates = response.json()
         usd_rate = exchange_rates['rates']['USD']
 
-        # Convert the amount from Guaraníes to USD
         amount_in_usd = round(float(pyg_price) / usd_rate, 2)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-    # Credit Card Processing (Stripe)
     if payment_method.method_type == 'credit_card':
         payment = Payment({
             "intent": "sale",
@@ -236,7 +219,7 @@ def process_payment(request):
                 "payment_method": "credit_card",
                 "funding_instruments": [{
                     "credit_card": {
-                        "type": "visa",  # or "mastercard", "amex", etc.
+                        "type": "visa", 
                         "number": payment_method.details['cardNumber'],
                         "expire_month": payment_method.details['expiry'].split('/')[0],
                         "expire_year": payment_method.details['expiry'].split('/')[1],
@@ -255,10 +238,8 @@ def process_payment(request):
             }]
         })
 
-        # Create the payment
         if payment.create():
             print("Payment created successfully")
-            # Process the order and save it in the database, reducing the stock
             product.reduceStock(quantity)
             product.save()
 
@@ -270,10 +251,9 @@ def process_payment(request):
             print(payment.error)
             return JsonResponse({"error": "Payment creation failed"}, status=500)
 
-    # PayPal Processing
+
     elif payment_method.method_type == 'paypal':
         try:
-            # Create a PayPal order
             paypal_order = paypalrestsdk.Order({
                 "intent": "CAPTURE",
                 "purchase_units": [{
@@ -291,21 +271,17 @@ def process_payment(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
-    # Bank Transfer Processing
+
     elif payment_method.method_type == 'bank_transfer':
-        # Simulate Bank Transfer logic
-        # Here, you can save the order as pending and return instructions
-        
-        # Create the order with pending status
+
         order = Order.objects.create(
             product=product,
             quantity=quantity,
             payment_method=payment_method,
             total_price=pyg_price,
-            bank_transfer_status=False  # Mark as pending
+            bank_transfer_status=False
         )
         
-        # Provide bank transfer instructions (You can customize this message)
         instructions = "Please transfer the amount to the following bank account:\n" \
                     "Bank Name: Example Bank\n" \
                     "Account Number: 1234567890\n" \
@@ -315,25 +291,39 @@ def process_payment(request):
         return JsonResponse({
             "message": "Bank Transfer initiated. Payment pending confirmation.",
             "instructions": instructions,
-            "order_id": order.id  # Return the order ID for reference
+            "order_id": order.id  
         })
 
-    # Reduce stock and complete order
     product.reduceStock(quantity)
     product.save()
 
-    # Save the order record (uncomment this once ready)
-    # Order.objects.create(user=request.user, product=product, quantity=quantity, payment_method=payment_method, total_price=pyg_price)
-
     return Response({'message': 'Payment successful'}, status=200)
 
+"""
+
+@api_view(['POST'])
+def process_payment(request):
+    product_id = request.data.get('product_id')
+    quantity = request.data.get('quantity')
+    payment_method_id = request.data.get('payment_method_id')
+
+    product = get_object_or_404(Product, id=product_id)
+    payment_method = get_object_or_404(PaymentMethod, id=payment_method_id)
+
+    total_price = int(product.price) * quantity
+
+    # Simulacion de pago
+
+    product.reduceStock(quantity)  
+    product.save()
+
+    return Response({'message': 'Payment successful'}, status=200)
 
 @api_view(['DELETE'])
 def delete_payment_method(request, method_id):
     try:
         method = PaymentMethod.objects.get(id=method_id)
 
-        # Delete the item from the cart.
         method.delete()
 
         return Response({'message': 'Payment method deleted.'}, status=200)

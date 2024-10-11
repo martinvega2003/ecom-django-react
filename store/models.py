@@ -7,11 +7,15 @@ from django.db.models import Count
 from django.core.validators import MaxValueValidator
 from django.core.exceptions import ValidationError
 
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+
 from django.db import models
 
 # Create your models here.
 
 from django.db import models
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -59,7 +63,7 @@ class Product(models.Model):
     
     #Asegurarse que el precio de descuento sea menor al precio original:
     def clean(self):
-        super().clean()  # Call the base class clean
+        super().clean()  # Llamamos al metodo base de clean()
         if self.isDiscounted:
             if self.discountPrice > self.price:
                 raise ValidationError({
@@ -119,10 +123,10 @@ class Cart(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
     class Meta:
-        unique_together = ('product', )  # Uncomment when using authentication -> Agregar "user" cuando ya haya la funcionalidad de authentication.
+        unique_together = ('product', )  # Agregar "user" cuando ya haya la funcionalidad de authentication.
 
     def __str__(self):
-        return f"Cart: {self.product.name}"  # Adjust as needed
+        return f"Cart: {self.product.name}"  
 
     
 class PaymentMethod(models.Model):
@@ -132,12 +136,12 @@ class PaymentMethod(models.Model):
         ('bank_transfer', 'Bank Transfer'),
     ]
     
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)  # Uncomment when user auth is implemented
+    # user = models.ForeignKey(User, on_delete=models.CASCADE) 
     method_type = models.CharField(max_length=20, choices=METHOD_CHOICES)
-    details = models.JSONField()  # Store method-specific details as JSON
+    details = models.JSONField()  # Guardamos los detalles como un JSON
 
     def validate_credit_card(self, card_number):
-        # Luhn Algorithm for Credit Card Validation
+        # Luhn Algorithm 
         def digits_of(n):
             return [int(d) for d in str(n)]
         digits = digits_of(card_number)
@@ -160,7 +164,7 @@ class PaymentMethod(models.Model):
 
         if self.method_type == 'bank_transfer':
             iban = self.details.get('iban', '')
-            if len(iban) < 15:  # Adjust IBAN length rules as necessary
+            if len(iban) < 15: 
                 raise ValidationError('Invalid IBAN')
 
     def __str__(self):
@@ -179,7 +183,7 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.order_number:
-            # Automatically assign an order number by counting the total number of orders + 1
+            # Asignamos el numero de orden contando el ultimo id y sumando 1.
             last_order = Order.objects.aggregate(count=Count('id'))
             self.order_number = last_order['count'] + 1
         super(Order, self).save(*args, **kwargs)

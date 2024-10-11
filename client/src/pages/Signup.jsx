@@ -12,14 +12,14 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
-            alert("Passwords do not match!");
+            alert("Las contraseñas no coinciden!");
             return;
         }
         
         const userData = { username, email, password };
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/v1/store/register/', userData);
+            const response = await axios.post('http://127.0.0.1:8000/api/v1/users/register/', userData);
             alert(`User created: ${response.data.username}`);
             // Reset form
             setUsername('');

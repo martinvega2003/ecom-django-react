@@ -57,7 +57,7 @@ export const LoggedNavbar = () => {
   
   return (
     <nav className='logged-h-cont'>
-        <Link to="/" className='logo-cont'>
+        <Link to="/sign-up" className='logo-cont'>
             <FontAwesomeIcon icon={faStore} size='4x' className='icon' />
         </Link>
 
