@@ -5,7 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     #Agregamos urls de las librerias:
     path("api/v1/", include("djoser.urls")),
     path("api/v1/", include("djoser.urls.authtoken")),
